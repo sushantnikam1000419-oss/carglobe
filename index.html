@@ -120,6 +120,27 @@ input[type=text]:focus{border-color:#5B9AF0}
   .dnm{font-size:19px}
   .dim{height:180px}
 }
+
+.gallery{position:relative;height:220px;background:#1A1A26;overflow:hidden}
+.gallery-slides{display:flex;height:100%;transition:transform .35s ease}
+.gslide{min-width:100%;height:220px;flex-shrink:0;position:relative;background:#1A1A26;display:flex;align-items:center;justify-content:center}
+.gslide img{width:100%;height:100%;object-fit:cover}
+.gslide .gemoji{font-size:80px}
+.gdots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s}
+.gdot.on{background:#5B9AF0;width:16px;border-radius:4px}
+.garrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#fff;font-size:18px;padding:8px 12px;cursor:pointer;z-index:2;border-radius:8px}
+.garrow.left{left:8px}
+.garrow.right{right:8px}
+.gloading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:#1A1A26}
+.gloading .spin{width:30px;height:30px;border:2px solid #2A2A3A;border-top-color:#5B9AF0;border-radius:50%;animation:sp .7s linear infinite}
+.gthumbs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;background:#12121A}
+.gthumbs::-webkit-scrollbar{display:none}
+.gthumb{width:56px;height:42px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid transparent;flex-shrink:0;background:#1A1A26}
+.gthumb.on{border-color:#5B9AF0}
+.gthumb-em{width:56px;height:42px;border-radius:6px;cursor:pointer;border:2px solid transparent;flex-shrink:0;background:#1A1A26;display:flex;align-items:center;justify-content:center;font-size:18px}
+.card-thumb{width:100%;height:110px;object-fit:cover;position:absolute;inset:0}
+.thumb-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;background:#1A1A26;z-index:1}
 </style>
 </head>
 <body>
@@ -168,10 +189,17 @@ input[type=text]:focus{border-color:#5B9AF0}
 
 <div class="det" id="det">
   <div class="dback"><button onclick="cd()">← Back</button></div>
-  <div class="dim" id="dim">
-    <span id="de" style="position:relative;z-index:1"></span>
-    <img id="dp" style="display:none" onerror="this.style.display='none';document.getElementById('de').style.display='block'">
+  <div class="gallery" id="gallery">
+    <div class="gloading" id="gloading">
+      <div class="spin"></div>
+      <div style="color:#5A5A72;font-size:12px">Loading photos...</div>
+    </div>
+    <div class="gallery-slides" id="gslides"></div>
+    <div class="gdots" id="gdots"></div>
+    <button class="garrow left" onclick="goPrev()">&#8249;</button>
+    <button class="garrow right" onclick="goNext()">&#8250;</button>
   </div>
+  <div class="gthumbs" id="gthumbs"></div>
   <div class="dpad">
     <div id="dbr" style="color:#5A5A72;font-size:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px"></div>
     <div class="dnm" id="dn"></div>
@@ -350,15 +378,23 @@ function rg(data,v){
       '<div class="cpr">'+gp(c)+'</div><div class="crt">⭐ '+c.rating+' · Safety '+c.safety+'/5</div></div></div>';
   }).join('');
   sh(3);
+  // Load real thumbnails for all cards
+  data.forEach(function(c,i){
+    loadThumb(i, c.brand, c.name, c.emoji||'🚗');
+  });
 }
 
 function od(i){
   cur=cars[i];var c=cur;
-  var ph=document.getElementById('dp'),em=document.getElementById('de');
-  em.textContent=c.emoji||'🚗';em.style.display='block';ph.style.display='none';
-  ph.src='https://source.unsplash.com/800x400/?'+encodeURIComponent(c.brand+' '+c.name+' car');
-  ph.onload=function(){ph.style.display='block';em.style.display='none'};
-  ph.onerror=function(){ph.style.display='none';em.style.display='block'};
+  // Reset gallery
+  document.getElementById('gloading').style.display='flex';
+  document.getElementById('gslides').innerHTML='';
+  document.getElementById('gdots').innerHTML='';
+  document.getElementById('gthumbs').innerHTML='';
+  // Fetch real images
+  fetchImages(c.brand, c.name).then(function(imgs){
+    buildGallery(imgs, c.emoji||'🚗');
+  });
   document.getElementById('dbr').textContent=c.brand;
   document.getElementById('dn').textContent=c.name;
   document.getElementById('ds').textContent=(c.segment||'')+' · '+(c.countries||[]).slice(0,6).map(function(x){return FL[x]||x}).join(' ');
@@ -481,6 +517,87 @@ function gt(t){
   if(t==='s')rw();
   if(t==='c')rc2();
 }
+
+// ── GALLERY STATE ─────────────────────────────────────────────────────────
+var curSlide=0, slideImgs=[], curCarName='';
+
+async function fetchImages(brand, name) {
+  try {
+    var r = await fetch('/api/search', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({type:'images', carName: brand+' '+name+' automobile'})
+    });
+    var d = await r.json();
+    return d.images || [];
+  } catch(e) { return []; }
+}
+
+function buildGallery(imgs, emoji) {
+  curSlide = 0;
+  slideImgs = imgs;
+  var slides = document.getElementById('gslides');
+  var dots = document.getElementById('gdots');
+  var thumbs = document.getElementById('gthumbs');
+  document.getElementById('gloading').style.display = 'none';
+
+  if (!imgs.length) {
+    slides.innerHTML = '<div class="gslide"><div class="gemoji">'+(emoji||'🚗')+'</div></div>';
+    dots.innerHTML = '';
+    thumbs.innerHTML = '';
+    return;
+  }
+
+  slides.innerHTML = imgs.map(function(url) {
+    return '<div class="gslide"><img src="'+url+'" onerror="this.style.display='none'" loading="lazy"></div>';
+  }).join('');
+
+  dots.innerHTML = imgs.map(function(_,i) {
+    return '<div class="gdot '+(i===0?'on':'')+'" onclick="goSlide('+i+')"></div>';
+  }).join('');
+
+  thumbs.innerHTML = imgs.map(function(url,i) {
+    return '<img class="gthumb '+(i===0?'on':'')+'" src="'+url+'" onclick="goSlide('+i+')" onerror="this.style.display='none'">';
+  }).join('');
+}
+
+function goSlide(n) {
+  if(!slideImgs.length) return;
+  curSlide = Math.max(0, Math.min(n, slideImgs.length-1));
+  document.getElementById('gslides').style.transform = 'translateX(-'+curSlide*100+'%)';
+  document.querySelectorAll('.gdot').forEach(function(d,i){d.classList.toggle('on',i===curSlide)});
+  document.querySelectorAll('.gthumb').forEach(function(d,i){d.classList.toggle('on',i===curSlide)});
+}
+function goPrev(){goSlide(curSlide-1)}
+function goNext(){goSlide(curSlide+1)}
+
+// Touch swipe
+var tsx=0;
+var gEl=document.getElementById('gallery');
+gEl.addEventListener('touchstart',function(e){tsx=e.touches[0].clientX},{passive:true});
+gEl.addEventListener('touchend',function(e){
+  var dx=tsx-e.changedTouches[0].clientX;
+  if(dx>40)goNext();else if(dx<-40)goPrev();
+},{passive:true});
+
+// Load thumbnail for card
+async function loadThumb(idx, brand, name, emoji) {
+  var el = document.getElementById('thumb-'+idx);
+  if(!el) return;
+  try {
+    var r = await fetch('/api/search',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'images',carName:brand+' '+name})
+    });
+    var d = await r.json();
+    var imgs = d.images||[];
+    if(imgs.length && el) {
+      el.innerHTML = '<img class="card-thumb" src="'+imgs[0]+'" onerror="this.innerHTML=''+emoji+''"><div class="thumb-loading" style="display:none"></div>';
+    }
+  } catch(e) {}
+}
+
 sh(0);
 </script>
 </body>
