@@ -1,3 +1,11 @@
 {
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]
+  "rewrites": [
+    { "source": "/api/search", "destination": "/api/search" }
+  ],
+  "functions": {
+    "api/search.js": {
+      "memory": 512,
+      "maxDuration": 30
+    }
+  }
 }
