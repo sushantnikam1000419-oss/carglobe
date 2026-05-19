@@ -1,585 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CarGlobe</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#0A0A0F;color:#F0F0F8;min-height:100vh;display:flex;flex-direction:column;width:100%;max-width:600px;margin:0 auto}
-input,button{font-family:inherit}
-.top{background:#12121A;border-bottom:1px solid #2A2A3A;padding:12px;flex-shrink:0}
-.logo{font-size:17px;font-weight:700;margin-bottom:10px}
-.srow{display:flex;gap:8px}
-input[type=text]{flex:1;background:#1A1A26;border:1px solid #2A2A3A;border-radius:10px;color:#F0F0F8;font-size:14px;padding:10px 12px;outline:none}
-input[type=text]:focus{border-color:#5B9AF0}
-.sbtn{background:#5B9AF0;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer}
-.hint{font-size:11px;margin-top:7px;color:#5A5A72}
-.main{flex:1;overflow-y:auto}
-.cen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;gap:14px;padding:24px;text-align:center}
-.spin{width:36px;height:36px;border:3px solid #2A2A3A;border-top-color:#5B9AF0;border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.qg{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
-.qb{background:#1A1A26;border:1px solid #2A2A3A;border-radius:10px;color:#9090A8;padding:10px;font-size:12px;cursor:pointer;text-align:left}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
-.card{background:#12121A;border:1px solid #2A2A3A;border-radius:12px;overflow:hidden;cursor:pointer}
-.card:active{opacity:.8}
-.cim{height:110px;background:#1A1A26;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;overflow:hidden}
-.cim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cbo{padding:9px}
-.cbr{color:#5A5A72;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
-.cnm{font-size:13px;font-weight:700;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cpr{color:#5B9AF0;font-size:14px;font-weight:700;margin-bottom:3px}
-.crt{color:#9090A8;font-size:10px}
-/* DETAIL */
-.det{position:fixed;top:0;left:0;right:0;bottom:0;background:#0A0A0F;z-index:100;overflow-y:auto;display:none}
-.det.show{display:block}
-.dback{padding:12px}
-.dback button{background:#1A1A26;border:1px solid #2A2A3A;border-radius:8px;color:#9090A8;padding:7px 14px;font-size:13px;cursor:pointer}
-/* GALLERY */
-.gallery{position:relative;height:220px;background:#1A1A26;overflow:hidden}
-.gslides{display:flex;height:220px;transition:transform .35s ease}
-.gslide{min-width:100%;height:220px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:80px;background:#1A1A26;position:relative;overflow:hidden}
-.gslide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.gloading{position:absolute;inset:0;background:#1A1A26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:2}
-.garr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#fff;font-size:20px;padding:6px 11px;cursor:pointer;z-index:3;border-radius:8px}
-.garr.l{left:8px}
-.garr.r{right:8px}
-.gdots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:3}
-.gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer}
-.gdot.on{background:#5B9AF0;width:14px;border-radius:4px}
-.gthumbs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;background:#12121A;border-bottom:1px solid #2A2A3A}
-.gthumbs::-webkit-scrollbar{display:none}
-.gthumb{width:56px;height:42px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid transparent;flex-shrink:0}
-.gthumb.on{border-color:#5B9AF0}
-/* DETAIL BODY */
-.dpad{padding:14px}
-.dnm{font-size:22px;font-weight:700;margin-bottom:4px}
-.sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9090A8;margin:14px 0 7px;border-bottom:1px solid #2A2A3A;padding-bottom:5px}
-.s4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
-.st{background:#1A1A26;border-radius:9px;padding:9px}
-.stl{color:#5A5A72;font-size:9px;text-transform:uppercase;margin-bottom:2px}
-.stv{font-size:14px;font-weight:700}
-.prow{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px}
-.prow::-webkit-scrollbar{display:none}
-.pc{background:#1A1A26;border-radius:8px;padding:7px 10px;min-width:72px;flex-shrink:0}
-.pcf{color:#5A5A72;font-size:9px}
-.pcv{color:#5B9AF0;font-size:13px;font-weight:700}
-.svb{width:100%;padding:11px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin:12px 0}
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.sc{background:#1A1A26;border-radius:8px;padding:9px}
-.scl{color:#5A5A72;font-size:9px;margin-bottom:2px}
-.scv{font-size:11px;font-weight:600}
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{background:#1A1A26;border-radius:20px;padding:4px 10px;font-size:10px;color:#9090A8}
-.rtbl{width:100%;border-collapse:collapse;font-size:11px}
-.rtbl th{text-align:left;padding:7px;border-bottom:1px solid #2A2A3A;font-size:10px;color:#5A5A72;font-weight:600}
-.rtbl td{padding:7px;border-bottom:1px solid #2A2A3A;color:#9090A8}
-.rv{background:#1A1A26;border-radius:10px;padding:11px;margin-bottom:7px}
-.rto{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.av{width:26px;height:26px;border-radius:50%;background:#1A2A45;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#5B9AF0;flex-shrink:0}
-.aib{background:#1A1A26;border-radius:12px;padding:13px;margin-bottom:14px}
-.air{display:flex;gap:6px;margin-top:10px}
-.air input{flex:1;background:#0A0A0F;border:1px solid #2A2A3A;border-radius:8px;color:#F0F0F8;font-size:12px;padding:7px 10px;outline:none}
-.air button{background:#5B9AF0;color:#fff;border:none;border-radius:8px;padding:7px 12px;cursor:pointer}
-/* TABS */
-.tabs{display:flex;background:#12121A;border-top:1px solid #2A2A3A;flex-shrink:0}
-.tab{flex:1;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none}
-.ti{font-size:17px;opacity:.3}
-.tl{font-size:9px;color:#5A5A72;font-weight:600}
-.tab.on .ti{opacity:1}
-.tab.on .tl{color:#5B9AF0}
-.tpg{flex:1;overflow-y:auto;display:none;flex-direction:column}
-.tpg.on{display:flex}
-.thd{background:#12121A;padding:13px;border-bottom:1px solid #2A2A3A;flex-shrink:0}
-.thd h2{font-size:19px;font-weight:700;margin-bottom:2px}
-.thd p{color:#9090A8;font-size:12px}
-.cpg{flex:1;display:none;flex-direction:column;overflow:hidden}
-.cpg.on{display:flex}
-.carea{flex:1;overflow-y:auto;padding:12px}
-.bub{border-radius:12px;padding:11px 13px;margin-bottom:8px;max-width:86%;font-size:13px;line-height:1.7;word-break:break-word}
-.bub.u{background:#5B9AF0;color:#fff;margin-left:auto}
-.bub.a{background:#12121A;border:1px solid #2A2A3A}
-.blb{font-size:9px;color:#5A5A72;margin-bottom:3px;text-transform:uppercase}
-.cin{display:flex;gap:7px;padding:10px;background:#12121A;border-top:1px solid #2A2A3A;flex-shrink:0}
-.cin input{flex:1;background:#1A1A26;border:1px solid #2A2A3A;border-radius:10px;color:#F0F0F8;font-size:13px;padding:9px 12px;outline:none}
-.cin button{background:#5B9AF0;color:#fff;border:none;border-radius:10px;padding:9px 14px;font-size:16px;cursor:pointer}
-.cmpw{padding:12px}
-.csel{display:flex;gap:8px;align-items:center;margin-bottom:14px}
-.cpk{flex:1;background:#12121A;border:1px solid #2A2A3A;border-radius:12px;padding:12px;text-align:center;cursor:pointer;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-.cpk.has{border-color:#5B9AF0}
-.ctb{border:1px solid #2A2A3A;border-radius:10px;overflow:hidden}
-.cr{display:grid;grid-template-columns:32% 1fr 1fr;border-bottom:1px solid #2A2A3A}
-.cr:last-child{border:none}
-.cr.hd{background:#1A1A26}
-.cr:nth-child(even):not(.hd){background:#1A1A26}
-.cc{padding:7px 8px;font-size:11px;color:#9090A8;overflow:hidden;text-overflow:ellipsis}
-.cc.lb{color:#5A5A72;font-size:10px;text-transform:uppercase}
-.cc.a{color:#5B9AF0;font-weight:600}
-.cc.b{color:#3DD68C;font-weight:600;text-align:right}
-.wcc{display:flex;align-items:center;gap:10px;background:#12121A;border:1px solid #2A2A3A;border-radius:12px;padding:11px;margin-bottom:8px;cursor:pointer}
-.nc{background:#12121A;border:1px solid #2A2A3A;border-radius:12px;padding:13px;margin-bottom:9px}
-.ov{position:fixed;top:0;left:0;right:0;bottom:0;background:#0A0A0F;z-index:200;display:none;flex-direction:column}
-.ov.show{display:flex}
-.oh{background:#12121A;padding:13px 14px;border-bottom:1px solid #2A2A3A;display:flex;justify-content:space-between;align-items:center;font-weight:700}
-.ol{flex:1;overflow-y:auto;padding:12px}
-.oc{display:flex;align-items:center;gap:10px;background:#12121A;border:1px solid #2A2A3A;border-radius:10px;padding:11px;margin-bottom:7px;cursor:pointer}
-@media(max-width:600px){
-  .det{left:0;right:0;max-width:100%}
-  .ov{left:0;right:0;max-width:100%}
-  .s4{grid-template-columns:repeat(2,1fr)}
-}
-</style>
-</head>
-<body>
-<div class="top">
-  <div class="logo">🌍 CarGlobe</div>
-  <div class="srow">
-    <input type="text" id="si" placeholder="Search any car — Mahindra, BMW, Tesla..." onkeydown="if(event.key==='Enter')go()">
-    <button class="sbtn" onclick="go()">Search</button>
-  </div>
-  <div class="hint" id="hint">Search any car brand or model in the world</div>
-</div>
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
-<div class="main" id="main">
-  <div id="s0" class="cen">
-    <div style="font-size:62px">🚗</div>
-    <div style="font-size:20px;font-weight:700">Every Car in the World</div>
-    <div style="color:#9090A8;font-size:13px;line-height:1.9">Type any car name and tap Search</div>
-    <div class="qg">
-      <button class="qb" onclick="qs('Mahindra Thar')">🏕️ Mahindra Thar</button>
-      <button class="qb" onclick="qs('Tesla Model Y')">🔋 Tesla Model Y</button>
-      <button class="qb" onclick="qs('BMW X5')">👑 BMW X5</button>
-      <button class="qb" onclick="qs('Mahindra Scorpio N')">🦂 Scorpio N</button>
-      <button class="qb" onclick="qs('Ferrari Roma')">🔴 Ferrari</button>
-      <button class="qb" onclick="qs('Hyundai Creta')">🚙 Hyundai Creta</button>
-      <button class="qb" onclick="qs('Mahindra XUV700')">🚀 XUV700</button>
-      <button class="qb" onclick="qs('Toyota Fortuner')">🏔️ Fortuner</button>
-    </div>
-  </div>
-  <div id="s1" class="cen" style="display:none">
-    <div class="spin"></div>
-    <div id="lm" style="font-size:16px;font-weight:600">Searching...</div>
-    <div style="color:#5A5A72;font-size:12px">Fetching global specs and pricing</div>
-  </div>
-  <div id="s2" class="cen" style="display:none">
-    <div style="font-size:48px">⚠️</div>
-    <div id="et" style="font-size:16px;font-weight:700"></div>
-    <div id="ed" style="color:#9090A8;font-size:13px;line-height:1.7;max-width:280px"></div>
-    <button class="sbtn" onclick="go()" style="margin-top:8px">Try Again</button>
-  </div>
-  <div id="s3" style="display:none">
-    <div style="padding:9px 12px;color:#5B9AF0;font-size:11px;font-weight:600" id="rc"></div>
-    <div class="grid" id="cg"></div>
-    <div style="height:20px"></div>
-  </div>
-</div>
+  const { prompt, type, carName } = req.body;
 
-<!-- DETAIL -->
-<div class="det" id="det">
-  <div class="dback"><button onclick="cd()">← Back</button></div>
-  <div class="gallery">
-    <div class="gloading" id="gl"><div class="spin"></div><div style="color:#5A5A72;font-size:11px">Loading photos...</div></div>
-    <div class="gslides" id="gs"></div>
-    <button class="garr l" onclick="gp()">&#8249;</button>
-    <button class="garr r" onclick="gn()">&#8250;</button>
-    <div class="gdots" id="gd"></div>
-  </div>
-  <div class="gthumbs" id="gt"></div>
-  <div class="dpad">
-    <div id="dbr" style="color:#5A5A72;font-size:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px"></div>
-    <div class="dnm" id="dn"></div>
-    <div style="color:#5A5A72;font-size:11px;margin-bottom:12px" id="ds"></div>
-    <div id="dtg" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px"></div>
-    <div class="s4" id="dst"></div>
-    <div class="sec">💰 Price by Country</div>
-    <div class="prow" id="dpr"></div>
-    <button class="svb" id="svb" onclick="tsv()">♡ Save to Watchlist</button>
-    <div class="sec">⚙️ Specs</div>
-    <div class="sg" id="dsp"></div>
-    <div class="sec">🛡️ Safety</div>
-    <div id="dsf"></div>
-    <div class="sec">✅ Features</div>
-    <div class="chips" id="dft"></div>
-    <div class="sec">🛋️ Interior</div>
-    <div class="chips" id="dit"></div>
-    <div class="sec">⚔️ Rivals</div>
-    <table class="rtbl" id="drv"></table>
-    <div class="sec">💬 Reviews</div>
-    <div id="drw"></div>
-    <div class="sec">🤖 AI Insight</div>
-    <div class="aib">
-      <div id="aii" style="font-size:12px;line-height:1.75;color:#F0F0F8">Loading...</div>
-      <div class="air">
-        <input type="text" id="aiq" placeholder="Ask about this car..." onkeydown="if(event.key==='Enter')aask()">
-        <button onclick="aask()">↗</button>
-      </div>
-      <div id="aians" style="display:none;font-size:12px;line-height:1.75;margin-top:9px;color:#F0F0F8"></div>
-    </div>
-    <div style="height:40px"></div>
-  </div>
-</div>
+  // IMAGE FETCH from Wikimedia - unlimited, free, legal
+  if (type === 'images') {
+    try {
+      const query = encodeURIComponent(carName);
+      
+      // Search Wikimedia for car images
+      const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${query}&prop=images&imlimit=20&format=json&origin=*`;
+      const searchRes = await fetch(searchUrl);
+      const searchData = await searchRes.json();
+      
+      const pages = searchData.query?.pages || {};
+      const page = Object.values(pages)[0];
+      const imageFiles = (page?.images || [])
+        .map(img => img.title)
+        .filter(t => /\.(jpg|jpeg|png|webp)/i.test(t) && 
+                     !t.toLowerCase().includes('logo') &&
+                     !t.toLowerCase().includes('flag') &&
+                     !t.toLowerCase().includes('icon') &&
+                     !t.toLowerCase().includes('map'));
 
-<!-- PICK OVERLAY -->
-<div class="ov" id="pov">
-  <div class="oh">Pick Car <span id="pn"></span><span onclick="cp()" style="color:#F06060;cursor:pointer;font-weight:400;font-size:14px">✕</span></div>
-  <div class="ol" id="pl"></div>
-</div>
-
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab on" id="t-b" onclick="gt('b')"><span class="ti">🔍</span><span class="tl">Browse</span></button>
-  <button class="tab" id="t-c" onclick="gt('c')"><span class="ti">⚖️</span><span class="tl">Compare</span></button>
-  <button class="tab" id="t-s" onclick="gt('s')"><span class="ti">♥</span><span class="tl">Saved</span></button>
-  <button class="tab" id="t-n" onclick="gt('n')"><span class="ti">📰</span><span class="tl">News</span></button>
-  <button class="tab" id="t-a" onclick="gt('a')"><span class="ti">🤖</span><span class="tl">AI</span></button>
-</div>
-
-<div class="tpg" id="p-c">
-  <div class="thd"><h2>⚖️ Compare</h2><p>Search cars first then pick</p></div>
-  <div class="cmpw">
-    <div class="csel">
-      <div class="cpk" id="c1" onclick="op(1)"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 1</div></div>
-      <div style="color:#5A5A72;font-weight:700;font-size:14px;flex-shrink:0">VS</div>
-      <div class="cpk" id="c2" onclick="op(2)"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 2</div></div>
-    </div>
-    <div id="ctb"></div>
-  </div>
-</div>
-<div class="tpg" id="p-s">
-  <div class="thd"><h2>♥ Saved</h2><p id="wc">0 saved</p></div>
-  <div style="padding:12px;flex:1" id="wb"></div>
-</div>
-<div class="tpg" id="p-n">
-  <div class="thd"><h2>📰 News</h2><p>Latest auto news</p></div>
-  <div style="padding:12px" id="nb"></div>
-</div>
-<div class="cpg" id="p-a">
-  <div class="thd"><h2>🤖 Ask AI</h2><p>Your car expert</p></div>
-  <div class="carea" id="ca">
-    <div style="text-align:center;padding:16px 0 20px">
-      <div style="font-size:44px;margin-bottom:8px">🤖</div>
-      <div style="font-size:17px;font-weight:700;margin-bottom:6px">CarGlobe AI</div>
-      <div style="color:#9090A8;font-size:13px;line-height:1.8">Ask anything about cars worldwide</div>
-    </div>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Best SUV under 20 lakh India 2025')">→ Best SUV under ₹20L India?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Mahindra BE 6e vs Tata Curvv EV which to buy')">→ Mahindra BE 6e vs Tata Curvv EV?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Best electric car under 40000 dollars USA')">→ Best EV under $40k USA?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Most reliable car brand 2025')">→ Most reliable car brand 2025?</button>
-  </div>
-  <div class="cin">
-    <input type="text" id="ci" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')cs()">
-    <button onclick="cs()">↗</button>
-  </div>
-</div>
-
-<script>
-var cars=[],all=[],cur=null,cmps=[null,null],wl=[],pf=0,csi=0,csimgs=[];
-try{wl=JSON.parse(localStorage.getItem('w')||'[]')}catch(e){}
-var FL={IN:'🇮🇳',US:'🇺🇸',DE:'🇩🇪',JP:'🇯🇵',CN:'🇨🇳',GB:'🇬🇧',KR:'🇰🇷',AU:'🇦🇺',AE:'🇦🇪',FR:'🇫🇷',IT:'🇮🇹',SE:'🇸🇪',BR:'🇧🇷',ZA:'🇿🇦'};
-var CN2={IN:'India',US:'USA',DE:'Germany',JP:'Japan',CN:'China',GB:'UK',KR:'Korea',AU:'Australia',AE:'UAE',FR:'France',IT:'Italy',SE:'Sweden',BR:'Brazil',ZA:'S.Africa'};
-var SY={IN:'₹',US:'$',DE:'€',JP:'¥',CN:'¥',GB:'£',KR:'₩',AU:'A$',AE:'AED',FR:'€',IT:'€',SE:'kr',BR:'R$',ZA:'R'};
-
-function gp2(c){
-  var p=c.price||{};
-  var k=Object.keys(p).find(function(x){return p[x]});
-  if(!k)return'N/A';
-  var v=p[k],s=SY[k]||'$';
-  if(k==='IN')return s+(v/100000).toFixed(1)+'L';
-  if(k==='JP'||k==='KR')return s+v.toLocaleString();
-  return s+v.toLocaleString();
-}
-
-// API CALL
-async function api(body){
-  var r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  return r.json();
-}
-async function callAI(prompt,tok){
-  var d=await api({prompt:prompt,maxTokens:tok||3000});
-  if(d.error)throw new Error(JSON.stringify(d.error));
-  return(d.content||[]).map(function(x){return x.text||''}).join('');
-}
-
-// PARSE JSON
-function pj(raw){
-  var s=raw.indexOf('['),e=raw.lastIndexOf(']');
-  if(s<0||e<0)throw new Error('No JSON');
-  var str=raw.slice(s,e+1).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,' ');
-  try{return JSON.parse(str)}catch(_){}
-  var out='',ins=false,esc=false;
-  for(var i=0;i<str.length;i++){
-    var ch=str[i];
-    if(esc){out+=ch;esc=false;continue}
-    if(ch==='\\'){out+=ch;esc=true;continue}
-    if(ch==='"'){ins=!ins;out+=ch;continue}
-    if(ins&&ch==="'"){out+='\u2019';continue}
-    out+=ch;
-  }
-  try{return JSON.parse(out)}catch(_){}
-  var obs=[],d=0,st=-1;
-  for(var i=0;i<out.length;i++){
-    if(out[i]==='{'){if(d===0)st=i;d++}
-    else if(out[i]==='}'){d--;if(d===0&&st>=0){try{obs.push(JSON.parse(out.slice(st,i+1)))}catch(_){}}}
-  }
-  if(obs.length)return obs;
-  throw new Error('Parse failed');
-}
-
-// QUICK SEARCH
-function qs(v){document.getElementById('si').value=v;go()}
-
-// MAIN SEARCH
-async function go(){
-  var v=document.getElementById('si').value.trim();
-  if(!v)return;
-  sh(1);
-  document.getElementById('lm').textContent='Searching: '+v;
-  document.getElementById('hint').textContent='Searching...';
-  var prompt='Search: "'+v+'"\nReturn ONLY a raw JSON array of up to 6 matching cars. No text before or after. No markdown. Never use apostrophes inside string values.\n[{"id":1,"name":"Thar","brand":"Mahindra","segment":"SUV","emoji":"🏕️","trending":true,"rating":4.4,"safety":4,"tags":["SUV","Offroad"],"countries":["IN","AU"],"price":{"IN":1650000,"US":null,"DE":null,"GB":null,"JP":null,"AU":45000,"CN":null,"KR":null},"specs":{"Engine":"2.0L mStallion Turbo","Power":"150 hp","Torque":"320 Nm","Range":"-","Acceleration":"12s 0-100","TopSpeed":"155 kmph","Weight":"1875 kg","Length":"3985 mm","Wheelbase":"2450 mm","BootSpace":"419 L","Tyres":"255/65 R17","Brakes":"Disc all round"},"safetyRatings":{"Overall":4,"Frontal":4,"Side":4,"Rollover":3,"Pedestrian":3},"features":["4x4 Low Range","Convertible Roof","9in Screen","Cruise Control","6 Airbags"],"interior":["Fabric Seats","Rear Fold Seats","USB Charging"],"reviews":[{"name":"Rohit S","location":"India","rating":5,"text":"Best offroader in India"},{"name":"James T","location":"Australia","rating":4,"text":"Great value for capability"}],"rivals":[{"name":"Force Gurkha","price":"Rs 16.8L","power":"91 hp","rating":3.9},{"name":"Maruti Jimny","price":"Rs 12.7L","power":"105 hp","rating":4.1}]}]\nReturn only JSON array with accurate real data.';
-  try{
-    var raw=await callAI(prompt,4000);
-    var data=pj(raw);
-    if(!Array.isArray(data)||!data.length)throw new Error('No results');
-    cars=data;
-    data.forEach(function(c){if(!all.find(function(x){return x.id===c.id}))all.push(c)});
-    rg(data,v);
-    document.getElementById('hint').textContent='✨ '+data.length+' results for: '+v;
-  }catch(err){
-    document.getElementById('et').textContent='Could not find: '+v;
-    document.getElementById('ed').textContent=String(err.message||err).slice(0,120);
-    sh(2);
-    document.getElementById('hint').textContent='Try again';
-  }
-}
-
-// RENDER GRID
-function rg(data,v){
-  document.getElementById('rc').textContent=data.length+' results for "'+v+'"';
-  document.getElementById('cg').innerHTML=data.map(function(c,i){
-    return '<div class="card" onclick="od('+i+')">'+
-      '<div class="cim" id="ci'+i+'">'+
-        '<span style="font-size:46px">'+(c.emoji||'🚗')+'</span>'+
-      '</div>'+
-      '<div class="cbo">'+
-        '<div class="cbr">'+c.brand+'</div>'+
-        '<div class="cnm">'+c.name+'</div>'+
-        '<div class="cpr">'+gp2(c)+'</div>'+
-        '<div class="crt">⭐ '+c.rating+' · Safety '+c.safety+'/5</div>'+
-      '</div></div>';
-  }).join('');
-  sh(3);
-  // Load real thumbnails async
-  data.forEach(function(c,i){loadThumb(c,i)});
-}
-
-// LOAD THUMBNAIL
-async function loadThumb(c,i){
-  try{
-    var d=await api({type:'images',carName:c.brand+' '+c.name});
-    var imgs=d.images||[];
-    if(imgs.length){
-      var el=document.getElementById('ci'+i);
-      if(el){
-        el.innerHTML='<img src="'+imgs[0]+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">';
+      // Get actual image URLs
+      const imageUrls = [];
+      for (const file of imageFiles.slice(0, 12)) {
+        try {
+          const infoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(file)}&prop=imageinfo&iiprop=url|size&format=json&origin=*`;
+          const infoRes = await fetch(infoUrl);
+          const infoData = await infoRes.json();
+          const infoPages = infoData.query?.pages || {};
+          const infoPage = Object.values(infoPages)[0];
+          const url = infoPage?.imageinfo?.[0]?.url;
+          if (url) imageUrls.push(url);
+        } catch(_) {}
       }
+
+      // Also search Wikimedia Commons for more images
+      const commonsUrl = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${query}+car&srnamespace=6&srlimit=10&format=json&origin=*`;
+      const commonsRes = await fetch(commonsUrl);
+      const commonsData = await commonsRes.json();
+      const commonsFiles = commonsData.query?.search || [];
+      
+      for (const file of commonsFiles.slice(0, 8)) {
+        try {
+          const title = file.title;
+          if (!/\.(jpg|jpeg|png|webp)/i.test(title)) continue;
+          const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url&format=json&origin=*`;
+          const infoRes = await fetch(infoUrl);
+          const infoData = await infoRes.json();
+          const infoPages = infoData.query?.pages || {};
+          const infoPage = Object.values(infoPages)[0];
+          const url = infoPage?.imageinfo?.[0]?.url;
+          if (url && !imageUrls.includes(url)) imageUrls.push(url);
+        } catch(_) {}
+      }
+
+      return res.status(200).json({ images: imageUrls.slice(0, 10) });
+    } catch(e) {
+      return res.status(200).json({ images: [] });
     }
-  }catch(e){}
-}
-
-// GALLERY
-function goSlide(n){
-  if(!csimgs.length)return;
-  csi=Math.max(0,Math.min(n,csimgs.length-1));
-  document.getElementById('gs').style.transform='translateX(-'+csi*100+'%)';
-  document.querySelectorAll('.gdot').forEach(function(d,i){d.classList.toggle('on',i===csi)});
-  document.querySelectorAll('.gthumb').forEach(function(d,i){d.classList.toggle('on',i===csi)});
-}
-function gn(){goSlide(csi+1)}
-function gp(){goSlide(csi-1)}
-
-function buildGallery(imgs,emoji){
-  csi=0;csimgs=imgs;
-  document.getElementById('gl').style.display='none';
-  if(!imgs.length){
-    document.getElementById('gs').innerHTML='<div class="gslide"><span style="font-size:80px">'+(emoji||'🚗')+'</span></div>';
-    document.getElementById('gd').innerHTML='';
-    document.getElementById('gt').innerHTML='';
-    return;
   }
-  document.getElementById('gs').innerHTML=imgs.map(function(url){
-    return '<div class="gslide"><span style="font-size:80px;position:relative;z-index:0">'+(emoji||'🚗')+'</span><img src="'+url+'" onerror="this.style.display=\'none\'" loading="lazy"></div>';
-  }).join('');
-  document.getElementById('gd').innerHTML=imgs.map(function(_,i){
-    return '<div class="gdot '+(i===0?'on':'')+'" onclick="goSlide('+i+')"></div>';
-  }).join('');
-  document.getElementById('gt').innerHTML=imgs.map(function(url,i){
-    return '<img class="gthumb '+(i===0?'on':'')+'" src="'+url+'" onclick="goSlide('+i+')" onerror="this.style.display=\'none\'">';
-  }).join('');
-  document.getElementById('gs').style.transform='translateX(0)';
-}
 
-// Touch swipe on gallery
-var tsx=0;
-document.querySelector('.gallery').addEventListener('touchstart',function(e){tsx=e.touches[0].clientX},{passive:true});
-document.querySelector('.gallery').addEventListener('touchend',function(e){
-  var dx=tsx-e.changedTouches[0].clientX;
-  if(dx>40)gn();else if(dx<-40)gp();
-},{passive:true});
-
-// OPEN DETAIL
-function od(i){
-  cur=cars[i];var c=cur;
-  // Reset gallery
-  csimgs=[];csi=0;
-  document.getElementById('gl').style.display='flex';
-  document.getElementById('gs').innerHTML='';
-  document.getElementById('gd').innerHTML='';
-  document.getElementById('gt').innerHTML='';
-  document.getElementById('gs').style.transform='translateX(0)';
-  // Fetch images
-  api({type:'images',carName:c.brand+' '+c.name}).then(function(d){
-    buildGallery(d.images||[],c.emoji||'🚗');
-  }).catch(function(){buildGallery([],c.emoji||'🚗')});
-
-  document.getElementById('dbr').textContent=c.brand;
-  document.getElementById('dn').textContent=c.name;
-  document.getElementById('ds').textContent=(c.segment||'')+' · '+(c.countries||[]).slice(0,6).map(function(x){return FL[x]||x}).join(' ');
-  document.getElementById('dtg').innerHTML=(c.tags||[]).map(function(t){return'<span style="background:#1A1A26;border-radius:20px;padding:3px 9px;font-size:10px;color:#9090A8;border:1px solid #2A2A3A">'+t+'</span>'}).join('');
-  var sp=c.specs||{};
-  document.getElementById('dst').innerHTML=[
-    [c.rating+'★','Rating','#F0B429'],[c.safety+'/5','Safety','#3DD68C'],
-    [(sp.Power||'-').split(' ')[0],'Power','#F0F0F8'],[sp.Acceleration||sp.Accel||'-','0-100','#F0F0F8']
-  ].map(function(x){return'<div class="st"><div class="stl">'+x[1]+'</div><div class="stv" style="color:'+x[2]+'">'+x[0]+'</div></div>'}).join('');
-  document.getElementById('dpr').innerHTML=Object.entries(c.price||{}).filter(function(e){return e[1]}).map(function(e){
-    var k=e[0],v=e[1],s=SY[k]||'$';
-    var f=k==='IN'?s+(v/100000).toFixed(1)+'L':(k==='JP'||k==='KR')?s+v.toLocaleString():s+v.toLocaleString();
-    return'<div class="pc"><div class="pcf">'+(FL[k]||'🌍')+' '+(CN2[k]||k)+'</div><div class="pcv">'+f+'</div></div>';
-  }).join('');
-  usv();
-  document.getElementById('dsp').innerHTML=Object.entries(sp).map(function(e){return'<div class="sc"><div class="scl">'+e[0]+'</div><div class="scv">'+e[1]+'</div></div>'}).join('');
-  var sf=c.safetyRatings||c.safety_scores||{};
-  document.getElementById('dsf').innerHTML=Object.entries(sf).map(function(e){
-    var col=e[1]>=4?'#3DD68C':e[1]>=3?'#F0B429':'#F06060';
-    return'<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#9090A8;margin-bottom:3px"><span>'+e[0]+'</span><span style="color:'+col+';font-weight:700">'+e[1]+'/5</span></div><div style="height:5px;background:#1A1A26;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+(e[1]*20)+'%;background:'+col+';border-radius:4px"></div></div></div>';
-  }).join('');
-  document.getElementById('dft').innerHTML=(c.features||[]).map(function(f){return'<span class="chip">'+f+'</span>'}).join('');
-  document.getElementById('dit').innerHTML=(c.interior||[]).map(function(f){return'<span class="chip">'+f+'</span>'}).join('');
-  document.getElementById('drv').innerHTML='<thead><tr><th>Car</th><th>Price</th><th>Rating</th></tr></thead><tbody><tr style="background:#1A2A45"><td style="color:#F0F0F8;font-weight:700">'+c.brand+' '+c.name+'</td><td style="color:#5B9AF0">'+gp2(c)+'</td><td style="color:#F0B429">'+c.rating+'★</td></tr>'+(c.rivals||[]).map(function(r){return'<tr><td>'+r.name+'</td><td>'+(r.price||'-')+'</td><td style="color:#F0B429">'+r.rating+'★</td></tr>'}).join('')+'</tbody>';
-  document.getElementById('drw').innerHTML=(c.reviews||[]).map(function(r){return'<div class="rv"><div class="rto"><div class="av">'+((r.name||'U').slice(0,2).toUpperCase())+'</div><div style="flex:1"><div style="font-size:12px;font-weight:600">'+(r.name||'')+'</div><div style="font-size:10px;color:#5A5A72">'+(r.location||r.loc||'')+'</div></div><span style="color:#F0B429;font-size:12px">'+'★'.repeat(Math.min(5,r.rating||4))+'</span></div><div style="color:#9090A8;font-size:11px;line-height:1.65">"'+(r.text||'')+'"</div></div>'}).join('');
-  document.getElementById('aii').textContent='Loading AI insight...';
-  document.getElementById('aians').style.display='none';
-  document.getElementById('aiq').value='';
-  callAI('Write 2 sentences about the '+c.brand+' '+c.name+'. Who is it best for and what is its biggest strength. No apostrophes.',200)
-    .then(function(t){document.getElementById('aii').textContent=t})
-    .catch(function(){document.getElementById('aii').textContent='AI insight unavailable.'});
-  document.getElementById('det').classList.add('show');
-  document.getElementById('det').scrollTop=0;
-}
-function cd(){document.getElementById('det').classList.remove('show')}
-function usv(){
-  if(!cur)return;
-  var sv=wl.indexOf(cur.id)>=0;
-  var b=document.getElementById('svb');
-  b.style.background=sv?'#0D3020':'#5B9AF0';
-  b.style.color=sv?'#3DD68C':'#fff';
-  b.style.border=sv?'1px solid #3DD68C':'none';
-  b.textContent=sv?'♥ Saved — tap to remove':'♡ Save to Watchlist';
-}
-function tsv(){
-  if(!cur)return;
-  wl=wl.indexOf(cur.id)>=0?wl.filter(function(x){return x!==cur.id}):[...wl,cur.id];
-  try{localStorage.setItem('w',JSON.stringify(wl))}catch(e){}
-  usv();
-}
-async function aask(){
-  var v=document.getElementById('aiq').value.trim();
-  if(!v||!cur)return;
-  document.getElementById('aiq').value='';
-  var el=document.getElementById('aians');
-  el.style.display='block';el.textContent='Thinking...';
-  try{var t=await callAI('About '+cur.brand+' '+cur.name+': '+v+'. No apostrophes. Be concise.',400);el.textContent=t}
-  catch(e){el.textContent='Error. Check connection.'}
-}
-document.getElementById('aiq').addEventListener('keydown',function(e){if(e.key==='Enter')aask()});
-
-// COMPARE
-function op(n){
-  pf=n;document.getElementById('pn').textContent=n;
-  var list=document.getElementById('pl');
-  if(!all.length){list.innerHTML='<div style="text-align:center;padding:30px;color:#9090A8">Search for cars first.</div>';return}
-  list.innerHTML=all.map(function(c,i){return'<div class="oc" onclick="sp('+i+')"><span style="font-size:26px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+gp2(c)+'</div></div><span style="color:#5A5A72;font-size:18px;margin-left:auto">›</span></div>'}).join('');
-  document.getElementById('pov').classList.add('show');
-}
-function cp(){document.getElementById('pov').classList.remove('show')}
-function sp(i){cmps[pf-1]=all[i];cp();rcmp()}
-function rcmp(){
-  [0,1].forEach(function(n){
-    var c=cmps[n],el=document.getElementById('c'+(n+1));
-    el.className='cpk'+(c?' has':'');
-    el.innerHTML=c?'<div style="font-size:26px">'+(c.emoji||'🚗')+'</div><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:12px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:11px;color:#5B9AF0">'+gp2(c)+'</div>':'<div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car '+(n+1)+'</div>';
-  });
-  var tb=document.getElementById('ctb');
-  if(!cmps[0]||!cmps[1]){tb.innerHTML='';return}
-  var a=cmps[0],b=cmps[1];
-  var rows=[['Segment',a.segment,b.segment],['Price',gp2(a),gp2(b)],['Power',a.specs&&a.specs.Power,b.specs&&b.specs.Power],['Torque',a.specs&&a.specs.Torque,b.specs&&b.specs.Torque],['0-100',a.specs&&(a.specs.Acceleration||a.specs.Accel),b.specs&&(b.specs.Acceleration||b.specs.Accel)],['Top Speed',a.specs&&(a.specs.TopSpeed||a.specs['Top Speed']),b.specs&&(b.specs.TopSpeed||b.specs['Top Speed'])],['Weight',a.specs&&a.specs.Weight,b.specs&&b.specs.Weight],['Safety',a.safety+'/5',b.safety+'/5'],['Rating',a.rating+'/5',b.rating+'/5']];
-  tb.innerHTML='<div class="ctb"><div class="cr hd"><div class="cc lb">Spec</div><div class="cc a">'+(a.emoji||'')+' '+a.name+'</div><div class="cc b">'+(b.emoji||'')+' '+b.name+'</div></div>'+rows.map(function(r){return'<div class="cr"><div class="cc lb">'+r[0]+'</div><div class="cc">'+(r[1]||'–')+'</div><div class="cc" style="text-align:right">'+(r[2]||'–')+'</div></div>'}).join('')+'</div>';
-}
-
-// WATCHLIST
-function rw(){
-  var sv=all.filter(function(c){return wl.indexOf(c.id)>=0});
-  document.getElementById('wc').textContent=sv.length+' saved';
-  document.getElementById('wb').innerHTML=sv.length?sv.map(function(c){return'<div class="wcc" onclick="owl('+c.id+')"><span style="font-size:28px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+gp2(c)+'</div></div><button onclick="event.stopPropagation();dw('+c.id+')" style="background:#320A0A;border:none;border-radius:50%;width:28px;height:28px;color:#F06060;cursor:pointer;font-size:12px;flex-shrink:0">✕</button></div>'}).join(''):'<div style="text-align:center;padding:40px;color:#5A5A72"><div style="font-size:44px;margin-bottom:10px">♡</div><div style="font-size:16px;font-weight:700;color:#9090A8;margin-bottom:6px">Nothing saved</div><div style="font-size:13px">Search a car and tap Save</div></div>';
-}
-function owl(id){var i=all.findIndex(function(c){return c.id===id});if(i<0)return;cars=all;od(i)}
-function dw(id){wl=wl.filter(function(x){return x!==id});try{localStorage.setItem('w',JSON.stringify(wl))}catch(e){}rw()}
-
-// NEWS
-document.getElementById('nb').innerHTML=[
-  ['EV','#0D3020','#3DD68C','BYD overtakes Tesla in global EV sales Q3 2025','2 days ago','BYD shipped 1.13M EVs in Q3, edging Tesla at 1.08M.'],
-  ['India','#1A2A45','#5B9AF0','Mahindra BE 6e achieves 682km certified range','3 days ago','New benchmark for affordable EVs in India under 25 lakh.'],
-  ['Trending','#320A0A','#F06060','Hyundai Ioniq 5 N launches with 601 hp globally','4 days ago','0-100 in 3.4 seconds with dedicated drift mode.'],
-  ['Safety','#32280A','#F0B429','Euro NCAP 2025: 14 new five star cars','1 week ago','Ioniq 5, Model 3, XUV700 among the top scorers.'],
-  ['Luxury','#1E1535','#A78BFA','Porsche 911 Hybrid confirmed for 2026','1 week ago','T-Hybrid adds 60hp boost and 40 percent better economy.'],
-].map(function(n){return'<div class="nc"><div style="background:'+n[1]+';color:'+n[2]+';display:inline-block;border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;margin-bottom:6px">'+n[0]+'</div><div style="color:#F0F0F8;font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.5">'+n[3]+'</div><div style="color:#9090A8;font-size:12px;line-height:1.65;margin-bottom:5px">'+n[5]+'</div><div style="color:#5A5A72;font-size:10px;text-transform:uppercase">'+n[4]+'</div></div>'}).join('');
-
-// AI CHAT
-async function cq(v){document.getElementById('ci').value=v;cs()}
-async function cs(){
-  var v=document.getElementById('ci').value.trim();if(!v)return;
-  document.getElementById('ci').value='';
-  var area=document.getElementById('ca');
-  area.innerHTML+='<div class="bub u">'+v+'</div>';
-  area.innerHTML+='<div class="bub a" id="bt"><div class="blb">CarGlobe AI</div>Thinking...</div>';
-  area.scrollTop=area.scrollHeight;
-  try{
-    var ans=await callAI('Car question: '+v+'. Give helpful advice with specific models and prices. No apostrophes.',800);
-    document.getElementById('bt').outerHTML='<div class="bub a"><div class="blb">CarGlobe AI</div>'+ans+'</div>';
-  }catch(e){
-    document.getElementById('bt').outerHTML='<div class="bub a"><div class="blb">CarGlobe AI</div>Error — check connection.</div>';
+  // AI CAR DATA from Groq
+  try {
+    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + process.env.GROQ_API_KEY
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 4000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.choices?.[0]?.message?.content || '';
+    res.status(200).json({ content: [{ text }] });
+  } catch(e) {
+    res.status(500).json({ error: { message: e.message } });
   }
-  area.scrollTop=area.scrollHeight;
 }
-document.getElementById('ci').addEventListener('keydown',function(e){if(e.key==='Enter')cs()});
-
-// TABS & SCREENS
-function sh(n){
-  [0,1,2,3].forEach(function(i){
-    document.getElementById('s'+i).style.display=i===n?'':'none';
-  });
-  document.getElementById('main').style.display='block';
-}
-function gt(t){
-  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
-  document.getElementById('t-'+t).classList.add('on');
-  document.getElementById('main').style.display=t==='b'?'block':'none';
-  ['c','s','n'].forEach(function(x){document.getElementById('p-'+x).className='tpg'+(x===t?' on':'')});
-  document.getElementById('p-a').className='cpg'+(t==='a'?' on':'');
-  if(t==='s')rw();
-  if(t==='c')rcmp();
-}
-sh(0);
-</script>
-</body>
-</html>
