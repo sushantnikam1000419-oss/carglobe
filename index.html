@@ -24,9 +24,9 @@ input[type=text]:focus{border-color:#5B9AF0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
 .card{background:#12121A;border:1px solid #2A2A3A;border-radius:12px;overflow:hidden;cursor:pointer}
 .card:active{opacity:.8}
-.cim{height:110px;background:#1A1A26;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;overflow:hidden}
-.cim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cbo{padding:9px}
+.cim{height:120px;background:#1A1A26;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;overflow:hidden}
+.cim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.cbo{padding:10px}
 .cbr{color:#5A5A72;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
 .cnm{font-size:13px;font-weight:700;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cpr{color:#5B9AF0;font-size:14px;font-weight:700;margin-bottom:3px}
@@ -37,29 +37,26 @@ input[type=text]:focus{border-color:#5B9AF0}
 .dback{padding:12px}
 .dback button{background:#1A1A26;border:1px solid #2A2A3A;border-radius:8px;color:#9090A8;padding:7px 14px;font-size:13px;cursor:pointer}
 /* GALLERY */
-.gallery{position:relative;width:100%;height:260px;background:#0A0A0F;overflow:hidden}
-.gslides{display:flex;height:260px;transition:transform .35s ease;will-change:transform}
-.gslide{min-width:100%;height:260px;flex-shrink:0;background:#0A0A0F;position:relative;overflow:hidden}
+.gallery{width:100%;height:270px;position:relative;background:#111;overflow:hidden}
+.gtrack{display:flex;height:270px;transition:transform .3s ease}
+.gslide{min-width:100%;height:270px;flex-shrink:0;position:relative;background:#1A1A26;display:flex;align-items:center;justify-content:center}
 .gslide img{width:100%;height:100%;object-fit:cover;display:block}
-.gslide .gfall{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1A1A26}
-.gslide .gfall span{font-size:70px}
-.gslide .gfall p{color:#5A5A72;font-size:11px;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
-.gloading{position:absolute;inset:0;background:#1A1A26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:2}
-.garr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;font-size:22px;padding:8px 13px;cursor:pointer;z-index:3;border-radius:8px;backdrop-filter:blur(4px)}
+.gslide .gfb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.gslide .gfb span{font-size:72px}
+.gslide .gfb p{color:#5A5A72;font-size:10px;text-transform:uppercase;letter-spacing:1px}
+.glbl{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;text-transform:uppercase;letter-spacing:1px;padding:3px 9px;border-radius:20px;z-index:5;pointer-events:none}
+.garr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;color:#fff;font-size:22px;padding:7px 12px;cursor:pointer;z-index:5;border-radius:8px}
 .garr.l{left:8px}
 .garr.r{right:8px}
-.glabel{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:20px;z-index:3;backdrop-filter:blur(4px)}
-.gdots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
+.gdots{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:all .2s}
 .gdot.on{background:#5B9AF0;width:16px;border-radius:4px}
-.gthumbs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;background:#0A0A0F;border-bottom:1px solid #2A2A3A}
+.gloading{position:absolute;inset:0;background:#1A1A26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:6}
+/* THUMBS */
+.gthumbs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;background:#0D0D15;border-bottom:1px solid #2A2A3A}
 .gthumbs::-webkit-scrollbar{display:none}
-.gthumb{width:60px;height:46px;border-radius:7px;object-fit:cover;cursor:pointer;border:2px solid transparent;flex-shrink:0;background:#1A1A26}
+.gthumb{width:62px;height:46px;border-radius:7px;object-fit:cover;cursor:pointer;border:2px solid transparent;flex-shrink:0;background:#1A1A26}
 .gthumb.on{border-color:#5B9AF0}
-.gthumb-label{width:60px;height:46px;border-radius:7px;cursor:pointer;border:2px solid transparent;flex-shrink:0;background:#1A1A26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-.gthumb-label span{font-size:16px}
-.gthumb-label p{color:#5A5A72;font-size:7px;text-transform:uppercase;letter-spacing:.5px}
-.gthumb-label.on{border-color:#5B9AF0}
 /* DETAIL BODY */
 .dpad{padding:14px}
 .dnm{font-size:22px;font-weight:700;margin-bottom:4px}
@@ -132,19 +129,15 @@ input[type=text]:focus{border-color:#5B9AF0}
 .oh{background:#12121A;padding:13px 14px;border-bottom:1px solid #2A2A3A;display:flex;justify-content:space-between;align-items:center;font-weight:700}
 .ol{flex:1;overflow-y:auto;padding:12px}
 .oc{display:flex;align-items:center;gap:10px;background:#12121A;border:1px solid #2A2A3A;border-radius:10px;padding:11px;margin-bottom:7px;cursor:pointer}
-@media(max-width:600px){
-  .det{left:0;right:0;max-width:100%}
-  .ov{left:0;right:0;max-width:100%}
-  .s4{grid-template-columns:repeat(2,1fr)}
-}
 </style>
 </head>
 <body>
+
 <div class="top">
   <div class="logo">🌍 CarGlobe</div>
   <div class="srow">
-    <input type="text" id="si" placeholder="Search any car — Mahindra, BMW, Tesla..." onkeydown="if(event.key==='Enter')go()">
-    <button class="sbtn" onclick="go()">Search</button>
+    <input type="text" id="si" placeholder="Search any car — Mahindra, BMW, Tesla...">
+    <button class="sbtn" id="searchBtn">Search</button>
   </div>
   <div class="hint" id="hint">Search any car brand or model in the world</div>
 </div>
@@ -154,16 +147,7 @@ input[type=text]:focus{border-color:#5B9AF0}
     <div style="font-size:62px">🚗</div>
     <div style="font-size:20px;font-weight:700">Every Car in the World</div>
     <div style="color:#9090A8;font-size:13px;line-height:1.9">Type any car name and tap Search</div>
-    <div class="qg">
-      <button class="qb" onclick="qs('Mahindra Thar')">🏕️ Mahindra Thar</button>
-      <button class="qb" onclick="qs('Tesla Model Y')">🔋 Tesla Model Y</button>
-      <button class="qb" onclick="qs('BMW X5')">👑 BMW X5</button>
-      <button class="qb" onclick="qs('Mahindra Scorpio N')">🦂 Scorpio N</button>
-      <button class="qb" onclick="qs('Ferrari Roma')">🔴 Ferrari</button>
-      <button class="qb" onclick="qs('Hyundai Creta')">🚙 Hyundai Creta</button>
-      <button class="qb" onclick="qs('Mahindra XUV700')">🚀 XUV700</button>
-      <button class="qb" onclick="qs('Toyota Fortuner')">🏔️ Fortuner</button>
-    </div>
+    <div class="qg" id="qg"></div>
   </div>
   <div id="s1" class="cen" style="display:none">
     <div class="spin"></div>
@@ -174,7 +158,7 @@ input[type=text]:focus{border-color:#5B9AF0}
     <div style="font-size:48px">⚠️</div>
     <div id="et" style="font-size:16px;font-weight:700"></div>
     <div id="ed" style="color:#9090A8;font-size:13px;line-height:1.7;max-width:280px"></div>
-    <button class="sbtn" onclick="go()" style="margin-top:8px">Try Again</button>
+    <button class="sbtn" id="retryBtn" style="margin-top:8px">Try Again</button>
   </div>
   <div id="s3" style="display:none">
     <div style="padding:9px 12px;color:#5B9AF0;font-size:11px;font-weight:600" id="rc"></div>
@@ -185,15 +169,18 @@ input[type=text]:focus{border-color:#5B9AF0}
 
 <!-- DETAIL -->
 <div class="det" id="det">
-  <div class="dback"><button onclick="cd()">← Back</button></div>
+  <div class="dback"><button id="backBtn">← Back</button></div>
   <div class="gallery">
-    <div class="gloading" id="gl"><div class="spin"></div><div style="color:#5A5A72;font-size:11px">Loading photos...</div></div>
-    <div class="gslides" id="gs"></div>
-    <button class="garr l" onclick="gp()">&#8249;</button>
-    <button class="garr r" onclick="gn()">&#8250;</button>
+    <div class="gloading" id="gl">
+      <div class="spin"></div>
+      <div style="color:#5A5A72;font-size:11px">Loading photos...</div>
+    </div>
+    <div class="gtrack" id="gt2"></div>
+    <button class="garr l" id="prevBtn">&#8249;</button>
+    <button class="garr r" id="nextBtn">&#8250;</button>
     <div class="gdots" id="gd"></div>
   </div>
-  <div class="gthumbs" id="gt"></div>
+  <div class="gthumbs" id="gth"></div>
   <div class="dpad">
     <div id="dbr" style="color:#5A5A72;font-size:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px"></div>
     <div class="dnm" id="dn"></div>
@@ -202,7 +189,7 @@ input[type=text]:focus{border-color:#5B9AF0}
     <div class="s4" id="dst"></div>
     <div class="sec">💰 Price by Country</div>
     <div class="prow" id="dpr"></div>
-    <button class="svb" id="svb" onclick="tsv()">♡ Save to Watchlist</button>
+    <button class="svb" id="svb">♡ Save to Watchlist</button>
     <div class="sec">⚙️ Specs</div>
     <div class="sg" id="dsp"></div>
     <div class="sec">🛡️ Safety</div>
@@ -219,8 +206,8 @@ input[type=text]:focus{border-color:#5B9AF0}
     <div class="aib">
       <div id="aii" style="font-size:12px;line-height:1.75;color:#F0F0F8">Loading...</div>
       <div class="air">
-        <input type="text" id="aiq" placeholder="Ask about this car..." onkeydown="if(event.key==='Enter')aask()">
-        <button onclick="aask()">↗</button>
+        <input type="text" id="aiq" placeholder="Ask about this car...">
+        <button id="askBtn">↗</button>
       </div>
       <div id="aians" style="display:none;font-size:12px;line-height:1.75;margin-top:9px;color:#F0F0F8"></div>
     </div>
@@ -230,26 +217,29 @@ input[type=text]:focus{border-color:#5B9AF0}
 
 <!-- PICK OVERLAY -->
 <div class="ov" id="pov">
-  <div class="oh">Pick Car <span id="pn"></span><span onclick="cp()" style="color:#F06060;cursor:pointer;font-weight:400;font-size:14px">✕</span></div>
+  <div class="oh">
+    Pick Car <span id="pn"></span>
+    <span id="cancelPick" style="color:#F06060;cursor:pointer;font-weight:400;font-size:14px">✕ Cancel</span>
+  </div>
   <div class="ol" id="pl"></div>
 </div>
 
 <!-- TABS -->
 <div class="tabs">
-  <button class="tab on" id="t-b" onclick="gt('b')"><span class="ti">🔍</span><span class="tl">Browse</span></button>
-  <button class="tab" id="t-c" onclick="gt('c')"><span class="ti">⚖️</span><span class="tl">Compare</span></button>
-  <button class="tab" id="t-s" onclick="gt('s')"><span class="ti">♥</span><span class="tl">Saved</span></button>
-  <button class="tab" id="t-n" onclick="gt('n')"><span class="ti">📰</span><span class="tl">News</span></button>
-  <button class="tab" id="t-a" onclick="gt('a')"><span class="ti">🤖</span><span class="tl">AI</span></button>
+  <button class="tab on" id="t-b"><span class="ti">🔍</span><span class="tl">Browse</span></button>
+  <button class="tab" id="t-c"><span class="ti">⚖️</span><span class="tl">Compare</span></button>
+  <button class="tab" id="t-s"><span class="ti">♥</span><span class="tl">Saved</span></button>
+  <button class="tab" id="t-n"><span class="ti">📰</span><span class="tl">News</span></button>
+  <button class="tab" id="t-a"><span class="ti">🤖</span><span class="tl">AI</span></button>
 </div>
 
 <div class="tpg" id="p-c">
   <div class="thd"><h2>⚖️ Compare</h2><p>Search cars first then pick</p></div>
   <div class="cmpw">
     <div class="csel">
-      <div class="cpk" id="c1" onclick="op(1)"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 1</div></div>
+      <div class="cpk" id="c1"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 1</div></div>
       <div style="color:#5A5A72;font-weight:700;font-size:14px;flex-shrink:0">VS</div>
-      <div class="cpk" id="c2" onclick="op(2)"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 2</div></div>
+      <div class="cpk" id="c2"><div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car 2</div></div>
     </div>
     <div id="ctb"></div>
   </div>
@@ -270,340 +260,460 @@ input[type=text]:focus{border-color:#5B9AF0}
       <div style="font-size:17px;font-weight:700;margin-bottom:6px">CarGlobe AI</div>
       <div style="color:#9090A8;font-size:13px;line-height:1.8">Ask anything about cars worldwide</div>
     </div>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Best SUV under 20 lakh India 2025')">→ Best SUV under ₹20L India?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Mahindra BE 6e vs Tata Curvv EV which to buy')">→ Mahindra BE 6e vs Tata Curvv EV?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Best electric car under 40000 dollars USA')">→ Best EV under $40k USA?</button>
-    <button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left" onclick="cq('Most reliable car brand 2025')">→ Most reliable car brand 2025?</button>
+    <div id="quickAsks"></div>
   </div>
   <div class="cin">
-    <input type="text" id="ci" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')cs()">
-    <button onclick="cs()">↗</button>
+    <input type="text" id="ci" placeholder="Ask anything...">
+    <button id="cSendBtn">↗</button>
   </div>
 </div>
 
 <script>
-var cars=[],all=[],cur=null,cmps=[null,null],wl=[],pf=0,csi=0,csimgs=[];
-try{wl=JSON.parse(localStorage.getItem('w')||'[]')}catch(e){}
-var FL={IN:'🇮🇳',US:'🇺🇸',DE:'🇩🇪',JP:'🇯🇵',CN:'🇨🇳',GB:'🇬🇧',KR:'🇰🇷',AU:'🇦🇺',AE:'🇦🇪',FR:'🇫🇷',IT:'🇮🇹',SE:'🇸🇪',BR:'🇧🇷',ZA:'🇿🇦'};
-var CN2={IN:'India',US:'USA',DE:'Germany',JP:'Japan',CN:'China',GB:'UK',KR:'Korea',AU:'Australia',AE:'UAE',FR:'France',IT:'Italy',SE:'Sweden',BR:'Brazil',ZA:'S.Africa'};
-var SY={IN:'₹',US:'$',DE:'€',JP:'¥',CN:'¥',GB:'£',KR:'₩',AU:'A$',AE:'AED',FR:'€',IT:'€',SE:'kr',BR:'R$',ZA:'R'};
+// ── STATE ─────────────────────────────────────────────────────────────────
+var STATE = {
+  cars: [], all: [], cur: null, cmps: [null, null],
+  wl: [], pf: 0, gIdx: 0, gImgs: [], curTab: 'b'
+};
+try { STATE.wl = JSON.parse(localStorage.getItem('cg_wl') || '[]'); } catch(e) {}
 
-function gp2(c){
-  var p=c.price||{};
-  var k=Object.keys(p).find(function(x){return p[x]});
-  if(!k)return'N/A';
-  var v=p[k],s=SY[k]||'$';
-  if(k==='IN')return s+(v/100000).toFixed(1)+'L';
-  if(k==='JP'||k==='KR')return s+v.toLocaleString();
-  return s+v.toLocaleString();
+var FL  = {IN:'🇮🇳',US:'🇺🇸',DE:'🇩🇪',JP:'🇯🇵',CN:'🇨🇳',GB:'🇬🇧',KR:'🇰🇷',AU:'🇦🇺',AE:'🇦🇪',FR:'🇫🇷',IT:'🇮🇹',SE:'🇸🇪',BR:'🇧🇷',ZA:'🇿🇦'};
+var CN2 = {IN:'India',US:'USA',DE:'Germany',JP:'Japan',CN:'China',GB:'UK',KR:'Korea',AU:'Australia',AE:'UAE',FR:'France',IT:'Italy',SE:'Sweden',BR:'Brazil',ZA:'S.Africa'};
+var SY  = {IN:'₹',US:'$',DE:'€',JP:'¥',CN:'¥',GB:'£',KR:'₩',AU:'A$',AE:'AED',FR:'€',IT:'€',SE:'kr',BR:'R$',ZA:'R'};
+var ANGLES = ['Exterior','Side View','Rear','Interior','Dashboard','Seats'];
+var QUICK  = [['🏕️','Mahindra Thar'],['🔋','Tesla Model Y'],['👑','BMW X5'],['🦂','Scorpio N'],['🔴','Ferrari'],['🚙','Hyundai Creta'],['🚀','Mahindra XUV700'],['🏔️','Toyota Fortuner']];
+var QUICKAI= ['Best SUV under 20 lakh India 2025','Mahindra BE 6e vs Tata Curvv EV which to buy','Best electric car under 40000 dollars USA','Most reliable car brand 2025'];
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('qg').innerHTML = QUICK.map(function(q){
+  return '<button class="qb" data-q="'+q[1]+'">'+q[0]+' '+q[1]+'</button>';
+}).join('');
+document.getElementById('quickAsks').innerHTML = QUICKAI.map(function(q){
+  return '<button class="oc" style="width:100%;color:#9090A8;font-size:13px;margin-bottom:6px;text-align:left;background:#12121A;border:1px solid #2A2A3A;border-radius:10px;padding:11px;cursor:pointer" data-q="'+q+'">→ '+q+'</button>';
+}).join('');
+document.getElementById('nb').innerHTML = [
+  ['EV','#0D3020','#3DD68C','BYD overtakes Tesla in global EV sales Q3 2025','2 days ago','BYD shipped 1.13M EVs in Q3, edging Tesla at 1.08M.'],
+  ['India','#1A2A45','#5B9AF0','Mahindra BE 6e achieves 682km certified range','3 days ago','New benchmark for affordable EVs in India.'],
+  ['Trending','#320A0A','#F06060','Hyundai Ioniq 5 N launches with 601 hp globally','4 days ago','0-100 in 3.4 seconds with dedicated drift mode.'],
+  ['Safety','#32280A','#F0B429','Euro NCAP 2025: 14 new five star cars','1 week ago','Ioniq 5, Model 3, XUV700 among the top scorers.'],
+  ['Luxury','#1E1535','#A78BFA','Porsche 911 Hybrid confirmed for 2026','1 week ago','T-Hybrid adds 60hp boost and 40 percent better economy.'],
+].map(function(n){ return '<div class="nc"><div style="background:'+n[1]+';color:'+n[2]+';display:inline-block;border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;margin-bottom:6px">'+n[0]+'</div><div style="color:#F0F0F8;font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.5">'+n[3]+'</div><div style="color:#9090A8;font-size:12px;line-height:1.65;margin-bottom:5px">'+n[5]+'</div><div style="color:#5A5A72;font-size:10px;text-transform:uppercase">'+n[4]+'</div></div>'; }).join('');
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function getPrice(c) {
+  var p = c.price || {};
+  var k = Object.keys(p).find(function(x){ return p[x]; });
+  if (!k) return 'N/A';
+  var v = p[k], s = SY[k] || '$';
+  if (k === 'IN') return s + (v/100000).toFixed(1) + 'L';
+  if (k === 'JP' || k === 'KR') return s + v.toLocaleString();
+  return s + v.toLocaleString();
+}
+function saveWL() { try { localStorage.setItem('cg_wl', JSON.stringify(STATE.wl)); } catch(e) {} }
+function sh(n) {
+  [0,1,2,3].forEach(function(i){ document.getElementById('s'+i).style.display = i===n ? '' : 'none'; });
+  document.getElementById('main').style.display = 'block';
 }
 
-// API CALL
-async function api(body){
-  var r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+// ── API ───────────────────────────────────────────────────────────────────
+async function callAPI(body) {
+  var r = await fetch('/api/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
   return r.json();
 }
-async function callAI(prompt,tok){
-  var d=await api({prompt:prompt,maxTokens:tok||3000});
-  if(d.error)throw new Error(JSON.stringify(d.error));
-  return(d.content||[]).map(function(x){return x.text||''}).join('');
+async function callAI(prompt, tok) {
+  var d = await callAPI({ prompt: prompt, maxTokens: tok || 3000 });
+  if (d.error) throw new Error(JSON.stringify(d.error));
+  return (d.content || []).map(function(x){ return x.text || ''; }).join('');
 }
 
-// PARSE JSON
-function pj(raw){
-  var s=raw.indexOf('['),e=raw.lastIndexOf(']');
-  if(s<0||e<0)throw new Error('No JSON');
-  var str=raw.slice(s,e+1).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,' ');
-  try{return JSON.parse(str)}catch(_){}
-  var out='',ins=false,esc=false;
-  for(var i=0;i<str.length;i++){
-    var ch=str[i];
-    if(esc){out+=ch;esc=false;continue}
-    if(ch==='\\'){out+=ch;esc=true;continue}
-    if(ch==='"'){ins=!ins;out+=ch;continue}
-    if(ins&&ch==="'"){out+='\u2019';continue}
-    out+=ch;
+// ── JSON PARSE ────────────────────────────────────────────────────────────
+function parseJSON(raw) {
+  var s = raw.indexOf('['), e = raw.lastIndexOf(']');
+  if (s < 0 || e < 0) throw new Error('No JSON array');
+  var str = raw.slice(s, e+1).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ');
+  try { return JSON.parse(str); } catch(_) {}
+  var out = '', ins = false, esc = false;
+  for (var i = 0; i < str.length; i++) {
+    var ch = str[i];
+    if (esc) { out += ch; esc = false; continue; }
+    if (ch === '\\') { out += ch; esc = true; continue; }
+    if (ch === '"') { ins = !ins; out += ch; continue; }
+    if (ins && ch === "'") { out += '\u2019'; continue; }
+    out += ch;
   }
-  try{return JSON.parse(out)}catch(_){}
-  var obs=[],d=0,st=-1;
-  for(var i=0;i<out.length;i++){
-    if(out[i]==='{'){if(d===0)st=i;d++}
-    else if(out[i]==='}'){d--;if(d===0&&st>=0){try{obs.push(JSON.parse(out.slice(st,i+1)))}catch(_){}}}
+  try { return JSON.parse(out); } catch(_) {}
+  var obs = [], d = 0, st = -1;
+  for (var i = 0; i < out.length; i++) {
+    if (out[i] === '{') { if (d===0) st=i; d++; }
+    else if (out[i] === '}') { d--; if (d===0 && st>=0) { try { obs.push(JSON.parse(out.slice(st,i+1))); } catch(_){} } }
   }
-  if(obs.length)return obs;
+  if (obs.length) return obs;
   throw new Error('Parse failed');
 }
 
-// QUICK SEARCH
-function qs(v){document.getElementById('si').value=v;go()}
-
-// MAIN SEARCH
-async function go(){
-  var v=document.getElementById('si').value.trim();
-  if(!v)return;
+// ── SEARCH ────────────────────────────────────────────────────────────────
+async function doSearch() {
+  var v = document.getElementById('si').value.trim();
+  if (!v) return;
   sh(1);
-  document.getElementById('lm').textContent='Searching: '+v;
-  document.getElementById('hint').textContent='Searching...';
-  var prompt='Search: "'+v+'"\nReturn ONLY a raw JSON array of up to 6 matching cars. No text before or after. No markdown. Never use apostrophes inside string values.\n[{"id":1,"name":"Thar","brand":"Mahindra","segment":"SUV","emoji":"🏕️","trending":true,"rating":4.4,"safety":4,"tags":["SUV","Offroad"],"countries":["IN","AU"],"price":{"IN":1650000,"US":null,"DE":null,"GB":null,"JP":null,"AU":45000,"CN":null,"KR":null},"specs":{"Engine":"2.0L mStallion Turbo","Power":"150 hp","Torque":"320 Nm","Range":"-","Acceleration":"12s 0-100","TopSpeed":"155 kmph","Weight":"1875 kg","Length":"3985 mm","Wheelbase":"2450 mm","BootSpace":"419 L","Tyres":"255/65 R17","Brakes":"Disc all round"},"safetyRatings":{"Overall":4,"Frontal":4,"Side":4,"Rollover":3,"Pedestrian":3},"features":["4x4 Low Range","Convertible Roof","9in Screen","Cruise Control","6 Airbags"],"interior":["Fabric Seats","Rear Fold Seats","USB Charging"],"reviews":[{"name":"Rohit S","location":"India","rating":5,"text":"Best offroader in India"},{"name":"James T","location":"Australia","rating":4,"text":"Great value for capability"}],"rivals":[{"name":"Force Gurkha","price":"Rs 16.8L","power":"91 hp","rating":3.9},{"name":"Maruti Jimny","price":"Rs 12.7L","power":"105 hp","rating":4.1}]}]\nReturn only JSON array with accurate real data.';
-  try{
-    var raw=await callAI(prompt,4000);
-    var data=pj(raw);
-    if(!Array.isArray(data)||!data.length)throw new Error('No results');
-    cars=data;
-    data.forEach(function(c){if(!all.find(function(x){return x.id===c.id}))all.push(c)});
-    rg(data,v);
-    document.getElementById('hint').textContent='✨ '+data.length+' results for: '+v;
-  }catch(err){
-    document.getElementById('et').textContent='Could not find: '+v;
-    document.getElementById('ed').textContent=String(err.message||err).slice(0,120);
+  document.getElementById('lm').textContent = 'Searching: ' + v;
+  document.getElementById('hint').textContent = 'Searching...';
+  var prompt = 'Search: "'+v+'"\nReturn ONLY a raw JSON array of up to 6 matching cars. No text before or after. No markdown. Never use apostrophes inside string values.\n[{"id":1,"name":"Thar","brand":"Mahindra","segment":"SUV","emoji":"🏕️","trending":true,"rating":4.4,"safety":4,"tags":["SUV","Offroad"],"countries":["IN","AU"],"price":{"IN":1650000,"US":null,"DE":null,"GB":null,"JP":null,"AU":45000,"CN":null,"KR":null},"specs":{"Engine":"2.0L mStallion Turbo","Power":"150 hp","Torque":"320 Nm","Range":"-","Acceleration":"12s 0-100","TopSpeed":"155 kmph","Weight":"1875 kg","Length":"3985 mm","Wheelbase":"2450 mm","BootSpace":"419 L","Tyres":"255/65 R17","Brakes":"Disc all round"},"safetyRatings":{"Overall":4,"Frontal":4,"Side":4,"Rollover":3,"Pedestrian":3},"features":["4x4 Low Range","Convertible Roof","9in Screen","Cruise Control","6 Airbags"],"interior":["Fabric Seats","Rear Fold Seats","USB Charging"],"reviews":[{"name":"Rohit S","location":"India","rating":5,"text":"Best offroader in India"},{"name":"James T","location":"Australia","rating":4,"text":"Great value for capability"}],"rivals":[{"name":"Force Gurkha","price":"Rs 16.8L","power":"91 hp","rating":3.9},{"name":"Maruti Jimny","price":"Rs 12.7L","power":"105 hp","rating":4.1}]}]\nReturn only JSON array with accurate real data.';
+  try {
+    var raw = await callAI(prompt, 4000);
+    var data = parseJSON(raw);
+    if (!Array.isArray(data) || !data.length) throw new Error('No results');
+    STATE.cars = data;
+    data.forEach(function(c){ if (!STATE.all.find(function(x){ return x.id===c.id; })) STATE.all.push(c); });
+    renderGrid(data, v);
+    document.getElementById('hint').textContent = '✨ ' + data.length + ' results for: ' + v;
+  } catch(err) {
+    document.getElementById('et').textContent = 'Could not find: ' + v;
+    document.getElementById('ed').textContent = String(err.message || err).slice(0, 120);
     sh(2);
-    document.getElementById('hint').textContent='Try again';
+    document.getElementById('hint').textContent = 'Try again';
   }
 }
 
-// RENDER GRID
-function rg(data,v){
-  document.getElementById('rc').textContent=data.length+' results for "'+v+'"';
-  document.getElementById('cg').innerHTML=data.map(function(c,i){
-    return '<div class="card" onclick="od('+i+')">'+
-      '<div class="cim" id="ci'+i+'">'+
-        '<span style="font-size:46px">'+(c.emoji||'🚗')+'</span>'+
-      '</div>'+
+// ── RENDER GRID ───────────────────────────────────────────────────────────
+function renderGrid(data, v) {
+  document.getElementById('rc').textContent = data.length + ' results for "' + v + '"';
+  document.getElementById('cg').innerHTML = data.map(function(c, i){
+    return '<div class="card" data-idx="'+i+'">'+
+      '<div class="cim" id="ci'+i+'"><span style="font-size:46px">'+(c.emoji||'🚗')+'</span></div>'+
       '<div class="cbo">'+
         '<div class="cbr">'+c.brand+'</div>'+
         '<div class="cnm">'+c.name+'</div>'+
-        '<div class="cpr">'+gp2(c)+'</div>'+
+        '<div class="cpr">'+getPrice(c)+'</div>'+
         '<div class="crt">⭐ '+c.rating+' · Safety '+c.safety+'/5</div>'+
       '</div></div>';
   }).join('');
   sh(3);
-  // Load real thumbnails async
-  data.forEach(function(c,i){loadThumb(c,i)});
+  // Load thumbnails in parallel
+  data.forEach(function(c, i){ loadThumb(c, i); });
 }
 
-// LOAD THUMBNAIL
-async function loadThumb(c,i){
-  var el=document.getElementById('ci'+i);
-  if(!el)return;
-  try{
-    var d=await api({type:'images',carName:c.brand+' '+c.name});
-    var imgs=d.images||[];
-    for(var x=0;x<Math.min(imgs.length,3);x++){
-      var success=await new Promise(function(resolve){
-        var img=new Image();
-        img.onload=function(){
-          el.innerHTML='';
-          el.style.fontSize='0';
-          var im=document.createElement('img');
-          im.src=imgs[x];
-          im.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1';
-          el.appendChild(im);
-          resolve(true);
-        };
-        img.onerror=function(){resolve(false)};
-        img.src=imgs[x];
-      });
-      if(success)break;
+// ── THUMBNAIL ─────────────────────────────────────────────────────────────
+async function loadThumb(c, i) {
+  try {
+    var d = await callAPI({ type: 'images', carName: c.brand + ' ' + c.name });
+    var imgs = d.images || [];
+    if (!imgs.length) return;
+    var el = document.getElementById('ci' + i);
+    if (!el) return;
+    // Try each image until one loads
+    for (var x = 0; x < Math.min(imgs.length, 4); x++) {
+      var loaded = await tryLoadImg(imgs[x]);
+      if (loaded) {
+        var img = document.createElement('img');
+        img.src = imgs[x];
+        img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1';
+        el.innerHTML = '';
+        el.appendChild(img);
+        break;
+      }
     }
-  }catch(e){}
+  } catch(e) {}
+}
+function tryLoadImg(src) {
+  return new Promise(function(resolve){
+    var img = new Image();
+    img.onload = function(){ resolve(true); };
+    img.onerror = function(){ resolve(false); };
+    img.src = src;
+    setTimeout(function(){ resolve(false); }, 5000);
+  });
 }
 
-// GALLERY
-function goSlide(n){
-  if(!csimgs.length)return;
-  csi=Math.max(0,Math.min(n,csimgs.length-1));
-  document.getElementById('gs').style.transform='translateX(-'+csi*100+'%)';
-  document.querySelectorAll('.gdot').forEach(function(d,i){d.classList.toggle('on',i===csi)});
-  document.querySelectorAll('.gthumb').forEach(function(d,i){d.classList.toggle('on',i===csi)});
+// ── GALLERY ───────────────────────────────────────────────────────────────
+function goSlide(n) {
+  if (!STATE.gImgs.length) return;
+  STATE.gIdx = Math.max(0, Math.min(n, STATE.gImgs.length - 1));
+  document.getElementById('gt2').style.transform = 'translateX(-' + STATE.gIdx * 100 + '%)';
+  document.querySelectorAll('.gdot').forEach(function(d, i){ d.classList.toggle('on', i === STATE.gIdx); });
+  document.querySelectorAll('.gthumb').forEach(function(d, i){ d.classList.toggle('on', i === STATE.gIdx); });
 }
-function gn(){goSlide(csi+1)}
-function gp(){goSlide(csi-1)}
-
-function buildGallery(imgs,emoji){
-  csi=0;csimgs=imgs;
-  document.getElementById('gl').style.display='none';
-  var labels=['Exterior','Side View','Rear','Interior','Dashboard','Seats','Detail','View'];
-  if(!imgs.length){
-    document.getElementById('gs').innerHTML='<div class="gslide"><div class="gfall"><span>'+(emoji||'🚗')+'</span><p>No photos available</p></div></div>';
-    document.getElementById('gd').innerHTML='';
-    document.getElementById('gt').innerHTML='';
+function buildGallery(imgs, emoji) {
+  STATE.gIdx = 0;
+  STATE.gImgs = imgs;
+  document.getElementById('gl').style.display = 'none';
+  if (!imgs.length) {
+    document.getElementById('gt2').innerHTML = '<div class="gslide"><div class="gfb"><span>'+(emoji||'🚗')+'</span><p>No photos yet</p></div></div>';
+    document.getElementById('gd').innerHTML = '';
+    document.getElementById('gth').innerHTML = '';
     return;
   }
-  document.getElementById('gs').innerHTML=imgs.map(function(url,i){
+  document.getElementById('gt2').innerHTML = imgs.map(function(url, i){
+    var lbl = ANGLES[i] || ('Photo ' + (i+1));
     return '<div class="gslide">'+
-      '<div class="glabel">'+(labels[i]||'Photo '+(i+1))+'</div>'+
-      '<img src="'+url+'" onerror="this.parentNode.innerHTML='<div class=gfall><span>'+(emoji||'🚗')+'</span><p>'+(labels[i]||'Photo')+'</p></div>'" loading="'+(i===0?'eager':'lazy')+'">'+
+      '<div class="glbl">'+lbl+'</div>'+
+      '<img src="'+url+'" loading="'+(i===0?'eager':'lazy')+'" onerror="this.parentNode.innerHTML=\'<div class=gfb><span>'+(emoji||'🚗')+'</span><p>'+lbl+'</p></div>\'">'+
     '</div>';
   }).join('');
-  document.getElementById('gd').innerHTML=imgs.map(function(_,i){
-    return '<div class="gdot '+(i===0?'on':'')+'" onclick="goSlide('+i+')"></div>';
+  document.getElementById('gd').innerHTML = imgs.map(function(_, i){
+    return '<div class="gdot '+(i===0?'on':'')+'" data-idx="'+i+'"></div>';
   }).join('');
-  document.getElementById('gt').innerHTML=imgs.map(function(url,i){
-    return '<img class="gthumb '+(i===0?'on':'')+'" src="'+url+'" onclick="goSlide('+i+')" title="'+(labels[i]||'')+'" onerror="this.style.display='none'">';
+  document.getElementById('gth').innerHTML = imgs.map(function(url, i){
+    return '<img class="gthumb '+(i===0?'on':'')+'" src="'+url+'" data-idx="'+i+'" onerror="this.style.display=\'none\'" loading="lazy">';
   }).join('');
-  document.getElementById('gs').style.transform='translateX(0)';
+  document.getElementById('gt2').style.transform = 'translateX(0)';
 }
 
-// Touch swipe on gallery
-var tsx=0;
-document.querySelector('.gallery').addEventListener('touchstart',function(e){tsx=e.touches[0].clientX},{passive:true});
-document.querySelector('.gallery').addEventListener('touchend',function(e){
-  var dx=tsx-e.changedTouches[0].clientX;
-  if(dx>40)gn();else if(dx<-40)gp();
-},{passive:true});
-
-// OPEN DETAIL
-function od(i){
-  cur=cars[i];var c=cur;
+// ── OPEN DETAIL ───────────────────────────────────────────────────────────
+function openDetail(i) {
+  STATE.cur = STATE.cars[i];
+  var c = STATE.cur;
   // Reset gallery
-  csimgs=[];csi=0;
-  document.getElementById('gl').style.display='flex';
-  document.getElementById('gs').innerHTML='';
-  document.getElementById('gd').innerHTML='';
-  document.getElementById('gt').innerHTML='';
-  document.getElementById('gs').style.transform='translateX(0)';
+  STATE.gImgs = []; STATE.gIdx = 0;
+  document.getElementById('gl').style.display = 'flex';
+  document.getElementById('gt2').innerHTML = '';
+  document.getElementById('gt2').style.transform = 'translateX(0)';
+  document.getElementById('gd').innerHTML = '';
+  document.getElementById('gth').innerHTML = '';
   // Fetch images
-  api({type:'images',carName:c.brand+' '+c.name}).then(function(d){
-    buildGallery(d.images||[],c.emoji||'🚗');
-  }).catch(function(){buildGallery([],c.emoji||'🚗')});
+  callAPI({ type: 'images', carName: c.brand + ' ' + c.name })
+    .then(function(d){ buildGallery(d.images || [], c.emoji || '🚗'); })
+    .catch(function(){ buildGallery([], c.emoji || '🚗'); });
 
-  document.getElementById('dbr').textContent=c.brand;
-  document.getElementById('dn').textContent=c.name;
-  document.getElementById('ds').textContent=(c.segment||'')+' · '+(c.countries||[]).slice(0,6).map(function(x){return FL[x]||x}).join(' ');
-  document.getElementById('dtg').innerHTML=(c.tags||[]).map(function(t){return'<span style="background:#1A1A26;border-radius:20px;padding:3px 9px;font-size:10px;color:#9090A8;border:1px solid #2A2A3A">'+t+'</span>'}).join('');
-  var sp=c.specs||{};
-  document.getElementById('dst').innerHTML=[
+  document.getElementById('dbr').textContent = c.brand;
+  document.getElementById('dn').textContent = c.name;
+  document.getElementById('ds').textContent = (c.segment||'') + ' · ' + (c.countries||[]).slice(0,6).map(function(x){ return FL[x]||x; }).join(' ');
+  document.getElementById('dtg').innerHTML = (c.tags||[]).map(function(t){ return '<span style="background:#1A1A26;border-radius:20px;padding:3px 9px;font-size:10px;color:#9090A8;border:1px solid #2A2A3A">'+t+'</span>'; }).join('');
+  var sp = c.specs || {};
+  document.getElementById('dst').innerHTML = [
     [c.rating+'★','Rating','#F0B429'],[c.safety+'/5','Safety','#3DD68C'],
     [(sp.Power||'-').split(' ')[0],'Power','#F0F0F8'],[sp.Acceleration||sp.Accel||'-','0-100','#F0F0F8']
-  ].map(function(x){return'<div class="st"><div class="stl">'+x[1]+'</div><div class="stv" style="color:'+x[2]+'">'+x[0]+'</div></div>'}).join('');
-  document.getElementById('dpr').innerHTML=Object.entries(c.price||{}).filter(function(e){return e[1]}).map(function(e){
+  ].map(function(x){ return '<div class="st"><div class="stl">'+x[1]+'</div><div class="stv" style="color:'+x[2]+'">'+x[0]+'</div></div>'; }).join('');
+  document.getElementById('dpr').innerHTML = Object.entries(c.price||{}).filter(function(e){ return e[1]; }).map(function(e){
     var k=e[0],v=e[1],s=SY[k]||'$';
-    var f=k==='IN'?s+(v/100000).toFixed(1)+'L':(k==='JP'||k==='KR')?s+v.toLocaleString():s+v.toLocaleString();
-    return'<div class="pc"><div class="pcf">'+(FL[k]||'🌍')+' '+(CN2[k]||k)+'</div><div class="pcv">'+f+'</div></div>';
+    var f = k==='IN' ? s+(v/100000).toFixed(1)+'L' : (k==='JP'||k==='KR') ? s+v.toLocaleString() : s+v.toLocaleString();
+    return '<div class="pc"><div class="pcf">'+(FL[k]||'🌍')+' '+(CN2[k]||k)+'</div><div class="pcv">'+f+'</div></div>';
   }).join('');
-  usv();
-  document.getElementById('dsp').innerHTML=Object.entries(sp).map(function(e){return'<div class="sc"><div class="scl">'+e[0]+'</div><div class="scv">'+e[1]+'</div></div>'}).join('');
-  var sf=c.safetyRatings||c.safety_scores||{};
-  document.getElementById('dsf').innerHTML=Object.entries(sf).map(function(e){
-    var col=e[1]>=4?'#3DD68C':e[1]>=3?'#F0B429':'#F06060';
-    return'<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#9090A8;margin-bottom:3px"><span>'+e[0]+'</span><span style="color:'+col+';font-weight:700">'+e[1]+'/5</span></div><div style="height:5px;background:#1A1A26;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+(e[1]*20)+'%;background:'+col+';border-radius:4px"></div></div></div>';
+  updateSaveBtn();
+  document.getElementById('dsp').innerHTML = Object.entries(sp).map(function(e){ return '<div class="sc"><div class="scl">'+e[0]+'</div><div class="scv">'+e[1]+'</div></div>'; }).join('');
+  var sf = c.safetyRatings || c.safety_scores || {};
+  document.getElementById('dsf').innerHTML = Object.entries(sf).map(function(e){
+    var col = e[1]>=4?'#3DD68C':e[1]>=3?'#F0B429':'#F06060';
+    return '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#9090A8;margin-bottom:3px"><span>'+e[0]+'</span><span style="color:'+col+';font-weight:700">'+e[1]+'/5</span></div><div style="height:5px;background:#1A1A26;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+(e[1]*20)+'%;background:'+col+';border-radius:4px"></div></div></div>';
   }).join('');
-  document.getElementById('dft').innerHTML=(c.features||[]).map(function(f){return'<span class="chip">'+f+'</span>'}).join('');
-  document.getElementById('dit').innerHTML=(c.interior||[]).map(function(f){return'<span class="chip">'+f+'</span>'}).join('');
-  document.getElementById('drv').innerHTML='<thead><tr><th>Car</th><th>Price</th><th>Rating</th></tr></thead><tbody><tr style="background:#1A2A45"><td style="color:#F0F0F8;font-weight:700">'+c.brand+' '+c.name+'</td><td style="color:#5B9AF0">'+gp2(c)+'</td><td style="color:#F0B429">'+c.rating+'★</td></tr>'+(c.rivals||[]).map(function(r){return'<tr><td>'+r.name+'</td><td>'+(r.price||'-')+'</td><td style="color:#F0B429">'+r.rating+'★</td></tr>'}).join('')+'</tbody>';
-  document.getElementById('drw').innerHTML=(c.reviews||[]).map(function(r){return'<div class="rv"><div class="rto"><div class="av">'+((r.name||'U').slice(0,2).toUpperCase())+'</div><div style="flex:1"><div style="font-size:12px;font-weight:600">'+(r.name||'')+'</div><div style="font-size:10px;color:#5A5A72">'+(r.location||r.loc||'')+'</div></div><span style="color:#F0B429;font-size:12px">'+'★'.repeat(Math.min(5,r.rating||4))+'</span></div><div style="color:#9090A8;font-size:11px;line-height:1.65">"'+(r.text||'')+'"</div></div>'}).join('');
-  document.getElementById('aii').textContent='Loading AI insight...';
-  document.getElementById('aians').style.display='none';
-  document.getElementById('aiq').value='';
-  callAI('Write 2 sentences about the '+c.brand+' '+c.name+'. Who is it best for and what is its biggest strength. No apostrophes.',200)
-    .then(function(t){document.getElementById('aii').textContent=t})
-    .catch(function(){document.getElementById('aii').textContent='AI insight unavailable.'});
+  document.getElementById('dft').innerHTML = (c.features||[]).map(function(f){ return '<span class="chip">'+f+'</span>'; }).join('');
+  document.getElementById('dit').innerHTML = (c.interior||[]).map(function(f){ return '<span class="chip">'+f+'</span>'; }).join('');
+  document.getElementById('drv').innerHTML = '<thead><tr><th>Car</th><th>Price</th><th>Rating</th></tr></thead><tbody><tr style="background:#1A2A45"><td style="color:#F0F0F8;font-weight:700">'+c.brand+' '+c.name+'</td><td style="color:#5B9AF0">'+getPrice(c)+'</td><td style="color:#F0B429">'+c.rating+'★</td></tr>'+(c.rivals||[]).map(function(r){ return '<tr><td>'+r.name+'</td><td>'+(r.price||'-')+'</td><td style="color:#F0B429">'+r.rating+'★</td></tr>'; }).join('')+'</tbody>';
+  document.getElementById('drw').innerHTML = (c.reviews||[]).map(function(r){ return '<div class="rv"><div class="rto"><div class="av">'+((r.name||'U').slice(0,2).toUpperCase())+'</div><div style="flex:1"><div style="font-size:12px;font-weight:600">'+(r.name||'')+'</div><div style="font-size:10px;color:#5A5A72">'+(r.location||r.loc||'')+'</div></div><span style="color:#F0B429;font-size:12px">'+'★'.repeat(Math.min(5,r.rating||4))+'</span></div><div style="color:#9090A8;font-size:11px;line-height:1.65">"'+(r.text||'')+'"</div></div>'; }).join('');
+  document.getElementById('aii').textContent = 'Loading AI insight...';
+  document.getElementById('aians').style.display = 'none';
+  document.getElementById('aiq').value = '';
+  callAI('Write 2 sentences about the '+c.brand+' '+c.name+'. Who is it best for and what is its biggest strength. No apostrophes.', 200)
+    .then(function(t){ document.getElementById('aii').textContent = t; })
+    .catch(function(){ document.getElementById('aii').textContent = 'AI insight unavailable.'; });
   document.getElementById('det').classList.add('show');
-  document.getElementById('det').scrollTop=0;
+  document.getElementById('det').scrollTop = 0;
 }
-function cd(){document.getElementById('det').classList.remove('show')}
-function usv(){
-  if(!cur)return;
-  var sv=wl.indexOf(cur.id)>=0;
-  var b=document.getElementById('svb');
-  b.style.background=sv?'#0D3020':'#5B9AF0';
-  b.style.color=sv?'#3DD68C':'#fff';
-  b.style.border=sv?'1px solid #3DD68C':'none';
-  b.textContent=sv?'♥ Saved — tap to remove':'♡ Save to Watchlist';
-}
-function tsv(){
-  if(!cur)return;
-  wl=wl.indexOf(cur.id)>=0?wl.filter(function(x){return x!==cur.id}):[...wl,cur.id];
-  try{localStorage.setItem('w',JSON.stringify(wl))}catch(e){}
-  usv();
-}
-async function aask(){
-  var v=document.getElementById('aiq').value.trim();
-  if(!v||!cur)return;
-  document.getElementById('aiq').value='';
-  var el=document.getElementById('aians');
-  el.style.display='block';el.textContent='Thinking...';
-  try{var t=await callAI('About '+cur.brand+' '+cur.name+': '+v+'. No apostrophes. Be concise.',400);el.textContent=t}
-  catch(e){el.textContent='Error. Check connection.'}
-}
-document.getElementById('aiq').addEventListener('keydown',function(e){if(e.key==='Enter')aask()});
 
-// COMPARE
-function op(n){
-  pf=n;document.getElementById('pn').textContent=n;
-  var list=document.getElementById('pl');
-  if(!all.length){list.innerHTML='<div style="text-align:center;padding:30px;color:#9090A8">Search for cars first.</div>';return}
-  list.innerHTML=all.map(function(c,i){return'<div class="oc" onclick="sp('+i+')"><span style="font-size:26px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+gp2(c)+'</div></div><span style="color:#5A5A72;font-size:18px;margin-left:auto">›</span></div>'}).join('');
+// ── SAVE ─────────────────────────────────────────────────────────────────
+function updateSaveBtn() {
+  if (!STATE.cur) return;
+  var sv = STATE.wl.indexOf(STATE.cur.id) >= 0;
+  var b = document.getElementById('svb');
+  b.style.background = sv ? '#0D3020' : '#5B9AF0';
+  b.style.color = sv ? '#3DD68C' : '#fff';
+  b.style.border = sv ? '1px solid #3DD68C' : 'none';
+  b.textContent = sv ? '♥ Saved — tap to remove' : '♡ Save to Watchlist';
+}
+
+// ── COMPARE ──────────────────────────────────────────────────────────────
+function openPick(n) {
+  STATE.pf = n;
+  document.getElementById('pn').textContent = n;
+  var list = document.getElementById('pl');
+  if (!STATE.all.length) {
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:#9090A8">Search for cars first.</div>';
+  } else {
+    list.innerHTML = STATE.all.map(function(c, i){
+      return '<div class="oc" data-pidx="'+i+'"><span style="font-size:26px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+getPrice(c)+'</div></div><span style="color:#5A5A72;font-size:18px;margin-left:auto">›</span></div>';
+    }).join('');
+  }
   document.getElementById('pov').classList.add('show');
 }
-function cp(){document.getElementById('pov').classList.remove('show')}
-function sp(i){cmps[pf-1]=all[i];cp();rcmp()}
-function rcmp(){
+function renderCompare() {
   [0,1].forEach(function(n){
-    var c=cmps[n],el=document.getElementById('c'+(n+1));
-    el.className='cpk'+(c?' has':'');
-    el.innerHTML=c?'<div style="font-size:26px">'+(c.emoji||'🚗')+'</div><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:12px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:11px;color:#5B9AF0">'+gp2(c)+'</div>':'<div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car '+(n+1)+'</div>';
+    var c = STATE.cmps[n], el = document.getElementById('c'+(n+1));
+    el.className = 'cpk' + (c?' has':'');
+    el.innerHTML = c
+      ? '<div style="font-size:26px">'+(c.emoji||'🚗')+'</div><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:12px;font-weight:700;color:#F0F0F8">'+c.name+'</div><div style="font-size:11px;color:#5B9AF0">'+getPrice(c)+'</div>'
+      : '<div style="font-size:26px">➕</div><div style="color:#5A5A72;font-size:11px">Car '+(n+1)+'</div>';
   });
-  var tb=document.getElementById('ctb');
-  if(!cmps[0]||!cmps[1]){tb.innerHTML='';return}
-  var a=cmps[0],b=cmps[1];
-  var rows=[['Segment',a.segment,b.segment],['Price',gp2(a),gp2(b)],['Power',a.specs&&a.specs.Power,b.specs&&b.specs.Power],['Torque',a.specs&&a.specs.Torque,b.specs&&b.specs.Torque],['0-100',a.specs&&(a.specs.Acceleration||a.specs.Accel),b.specs&&(b.specs.Acceleration||b.specs.Accel)],['Top Speed',a.specs&&(a.specs.TopSpeed||a.specs['Top Speed']),b.specs&&(b.specs.TopSpeed||b.specs['Top Speed'])],['Weight',a.specs&&a.specs.Weight,b.specs&&b.specs.Weight],['Safety',a.safety+'/5',b.safety+'/5'],['Rating',a.rating+'/5',b.rating+'/5']];
-  tb.innerHTML='<div class="ctb"><div class="cr hd"><div class="cc lb">Spec</div><div class="cc a">'+(a.emoji||'')+' '+a.name+'</div><div class="cc b">'+(b.emoji||'')+' '+b.name+'</div></div>'+rows.map(function(r){return'<div class="cr"><div class="cc lb">'+r[0]+'</div><div class="cc">'+(r[1]||'–')+'</div><div class="cc" style="text-align:right">'+(r[2]||'–')+'</div></div>'}).join('')+'</div>';
+  var tb = document.getElementById('ctb');
+  if (!STATE.cmps[0] || !STATE.cmps[1]) { tb.innerHTML = ''; return; }
+  var a = STATE.cmps[0], b = STATE.cmps[1];
+  var rows = [
+    ['Segment',a.segment,b.segment],['Price',getPrice(a),getPrice(b)],
+    ['Power',a.specs&&a.specs.Power,b.specs&&b.specs.Power],
+    ['Torque',a.specs&&a.specs.Torque,b.specs&&b.specs.Torque],
+    ['0-100',a.specs&&(a.specs.Acceleration||a.specs.Accel),b.specs&&(b.specs.Acceleration||b.specs.Accel)],
+    ['Top Speed',a.specs&&(a.specs.TopSpeed||a.specs['Top Speed']),b.specs&&(b.specs.TopSpeed||b.specs['Top Speed'])],
+    ['Weight',a.specs&&a.specs.Weight,b.specs&&b.specs.Weight],
+    ['Safety',a.safety+'/5',b.safety+'/5'],['Rating',a.rating+'/5',b.rating+'/5']
+  ];
+  tb.innerHTML = '<div class="ctb"><div class="cr hd"><div class="cc lb">Spec</div><div class="cc a">'+(a.emoji||'')+' '+a.name+'</div><div class="cc b">'+(b.emoji||'')+' '+b.name+'</div></div>'+rows.map(function(r){ return '<div class="cr"><div class="cc lb">'+r[0]+'</div><div class="cc">'+(r[1]||'–')+'</div><div class="cc" style="text-align:right">'+(r[2]||'–')+'</div></div>'; }).join('')+'</div>';
 }
 
-// WATCHLIST
-function rw(){
-  var sv=all.filter(function(c){return wl.indexOf(c.id)>=0});
-  document.getElementById('wc').textContent=sv.length+' saved';
-  document.getElementById('wb').innerHTML=sv.length?sv.map(function(c){return'<div class="wcc" onclick="owl('+c.id+')"><span style="font-size:28px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+gp2(c)+'</div></div><button onclick="event.stopPropagation();dw('+c.id+')" style="background:#320A0A;border:none;border-radius:50%;width:28px;height:28px;color:#F06060;cursor:pointer;font-size:12px;flex-shrink:0">✕</button></div>'}).join(''):'<div style="text-align:center;padding:40px;color:#5A5A72"><div style="font-size:44px;margin-bottom:10px">♡</div><div style="font-size:16px;font-weight:700;color:#9090A8;margin-bottom:6px">Nothing saved</div><div style="font-size:13px">Search a car and tap Save</div></div>';
+// ── WATCHLIST ─────────────────────────────────────────────────────────────
+function renderWL() {
+  var sv = STATE.all.filter(function(c){ return STATE.wl.indexOf(c.id) >= 0; });
+  document.getElementById('wc').textContent = sv.length + ' saved';
+  document.getElementById('wb').innerHTML = sv.length
+    ? sv.map(function(c){ return '<div class="wcc" data-wid="'+c.id+'"><span style="font-size:28px">'+(c.emoji||'🚗')+'</span><div style="flex:1"><div style="color:#5A5A72;font-size:9px;text-transform:uppercase">'+c.brand+'</div><div style="font-size:14px;font-weight:700">'+c.name+'</div><div style="font-size:12px;color:#5B9AF0">'+getPrice(c)+'</div></div><button class="wdel" data-did="'+c.id+'" style="background:#320A0A;border:none;border-radius:50%;width:28px;height:28px;color:#F06060;cursor:pointer;font-size:12px;flex-shrink:0">✕</button></div>'; }).join('')
+    : '<div style="text-align:center;padding:40px;color:#5A5A72"><div style="font-size:44px;margin-bottom:10px">♡</div><div style="font-size:16px;font-weight:700;color:#9090A8;margin-bottom:6px">Nothing saved</div><div style="font-size:13px">Search a car and tap Save</div></div>';
 }
-function owl(id){var i=all.findIndex(function(c){return c.id===id});if(i<0)return;cars=all;od(i)}
-function dw(id){wl=wl.filter(function(x){return x!==id});try{localStorage.setItem('w',JSON.stringify(wl))}catch(e){}rw()}
 
-// NEWS
-document.getElementById('nb').innerHTML=[
-  ['EV','#0D3020','#3DD68C','BYD overtakes Tesla in global EV sales Q3 2025','2 days ago','BYD shipped 1.13M EVs in Q3, edging Tesla at 1.08M.'],
-  ['India','#1A2A45','#5B9AF0','Mahindra BE 6e achieves 682km certified range','3 days ago','New benchmark for affordable EVs in India under 25 lakh.'],
-  ['Trending','#320A0A','#F06060','Hyundai Ioniq 5 N launches with 601 hp globally','4 days ago','0-100 in 3.4 seconds with dedicated drift mode.'],
-  ['Safety','#32280A','#F0B429','Euro NCAP 2025: 14 new five star cars','1 week ago','Ioniq 5, Model 3, XUV700 among the top scorers.'],
-  ['Luxury','#1E1535','#A78BFA','Porsche 911 Hybrid confirmed for 2026','1 week ago','T-Hybrid adds 60hp boost and 40 percent better economy.'],
-].map(function(n){return'<div class="nc"><div style="background:'+n[1]+';color:'+n[2]+';display:inline-block;border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;margin-bottom:6px">'+n[0]+'</div><div style="color:#F0F0F8;font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.5">'+n[3]+'</div><div style="color:#9090A8;font-size:12px;line-height:1.65;margin-bottom:5px">'+n[5]+'</div><div style="color:#5A5A72;font-size:10px;text-transform:uppercase">'+n[4]+'</div></div>'}).join('');
-
-// AI CHAT
-async function cq(v){document.getElementById('ci').value=v;cs()}
-async function cs(){
-  var v=document.getElementById('ci').value.trim();if(!v)return;
-  document.getElementById('ci').value='';
-  var area=document.getElementById('ca');
-  area.innerHTML+='<div class="bub u">'+v+'</div>';
-  area.innerHTML+='<div class="bub a" id="bt"><div class="blb">CarGlobe AI</div>Thinking...</div>';
-  area.scrollTop=area.scrollHeight;
-  try{
-    var ans=await callAI('Car question: '+v+'. Give helpful advice with specific models and prices. No apostrophes.',800);
-    document.getElementById('bt').outerHTML='<div class="bub a"><div class="blb">CarGlobe AI</div>'+ans+'</div>';
-  }catch(e){
-    document.getElementById('bt').outerHTML='<div class="bub a"><div class="blb">CarGlobe AI</div>Error — check connection.</div>';
+// ── AI CHAT ───────────────────────────────────────────────────────────────
+async function sendChat(q) {
+  if (!q || !q.trim()) return;
+  document.getElementById('ci').value = '';
+  var area = document.getElementById('ca');
+  area.innerHTML += '<div class="bub u">'+q+'</div>';
+  area.innerHTML += '<div class="bub a" id="bt"><div class="blb">CarGlobe AI</div>Thinking...</div>';
+  area.scrollTop = area.scrollHeight;
+  try {
+    var ans = await callAI('Car question: '+q+'. Give helpful advice with specific models and prices. No apostrophes.', 800);
+    document.getElementById('bt').outerHTML = '<div class="bub a"><div class="blb">CarGlobe AI</div>'+ans+'</div>';
+  } catch(e) {
+    document.getElementById('bt').outerHTML = '<div class="bub a"><div class="blb">CarGlobe AI</div>Error — check connection.</div>';
   }
-  area.scrollTop=area.scrollHeight;
+  area.scrollTop = area.scrollHeight;
 }
-document.getElementById('ci').addEventListener('keydown',function(e){if(e.key==='Enter')cs()});
 
-// TABS & SCREENS
-function sh(n){
-  [0,1,2,3].forEach(function(i){
-    document.getElementById('s'+i).style.display=i===n?'':'none';
-  });
-  document.getElementById('main').style.display='block';
-}
-function gt(t){
-  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────
+function goTab(t) {
+  STATE.curTab = t;
+  document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('on'); });
   document.getElementById('t-'+t).classList.add('on');
-  document.getElementById('main').style.display=t==='b'?'block':'none';
-  ['c','s','n'].forEach(function(x){document.getElementById('p-'+x).className='tpg'+(x===t?' on':'')});
-  document.getElementById('p-a').className='cpg'+(t==='a'?' on':'');
-  if(t==='s')rw();
-  if(t==='c')rcmp();
+  document.getElementById('main').style.display = t==='b' ? 'block' : 'none';
+  ['c','s','n'].forEach(function(x){ document.getElementById('p-'+x).className = 'tpg'+(x===t?' on':''); });
+  document.getElementById('p-a').className = 'cpg'+(t==='a'?' on':'');
+  if (t === 's') renderWL();
+  if (t === 'c') renderCompare();
 }
+
+// ── EVENT LISTENERS ───────────────────────────────────────────────────────
+// Search
+document.getElementById('searchBtn').addEventListener('click', doSearch);
+document.getElementById('si').addEventListener('keydown', function(e){ if(e.key==='Enter') doSearch(); });
+document.getElementById('retryBtn').addEventListener('click', doSearch);
+
+// Quick search buttons
+document.getElementById('qg').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-q]');
+  if (btn) { document.getElementById('si').value = btn.dataset.q; doSearch(); }
+});
+
+// Tabs
+document.getElementById('t-b').addEventListener('click', function(){ goTab('b'); });
+document.getElementById('t-c').addEventListener('click', function(){ goTab('c'); });
+document.getElementById('t-s').addEventListener('click', function(){ goTab('s'); });
+document.getElementById('t-n').addEventListener('click', function(){ goTab('n'); });
+document.getElementById('t-a').addEventListener('click', function(){ goTab('a'); });
+
+// Car grid clicks
+document.getElementById('cg').addEventListener('click', function(e){
+  var card = e.target.closest('[data-idx]');
+  if (card) openDetail(parseInt(card.dataset.idx));
+});
+
+// Back button
+document.getElementById('backBtn').addEventListener('click', function(){
+  document.getElementById('det').classList.remove('show');
+});
+
+// Gallery arrows
+document.getElementById('prevBtn').addEventListener('click', function(){ goSlide(STATE.gIdx - 1); });
+document.getElementById('nextBtn').addEventListener('click', function(){ goSlide(STATE.gIdx + 1); });
+
+// Gallery dots
+document.getElementById('gd').addEventListener('click', function(e){
+  var dot = e.target.closest('[data-idx]');
+  if (dot) goSlide(parseInt(dot.dataset.idx));
+});
+
+// Gallery thumbs
+document.getElementById('gth').addEventListener('click', function(e){
+  var th = e.target.closest('[data-idx]');
+  if (th) goSlide(parseInt(th.dataset.idx));
+});
+
+// Gallery swipe
+var tsx = 0;
+document.querySelector('.gallery').addEventListener('touchstart', function(e){ tsx = e.touches[0].clientX; }, {passive:true});
+document.querySelector('.gallery').addEventListener('touchend', function(e){
+  var dx = tsx - e.changedTouches[0].clientX;
+  if (dx > 40) goSlide(STATE.gIdx + 1);
+  else if (dx < -40) goSlide(STATE.gIdx - 1);
+}, {passive:true});
+
+// Save button
+document.getElementById('svb').addEventListener('click', function(){
+  if (!STATE.cur) return;
+  var id = STATE.cur.id;
+  STATE.wl = STATE.wl.indexOf(id) >= 0 ? STATE.wl.filter(function(x){ return x!==id; }) : [...STATE.wl, id];
+  saveWL();
+  updateSaveBtn();
+});
+
+// Ask car AI
+document.getElementById('askBtn').addEventListener('click', async function(){
+  var q = document.getElementById('aiq').value.trim();
+  if (!q || !STATE.cur) return;
+  document.getElementById('aiq').value = '';
+  var el = document.getElementById('aians');
+  el.style.display = 'block'; el.textContent = 'Thinking...';
+  try { el.textContent = await callAI('About '+STATE.cur.brand+' '+STATE.cur.name+': '+q+'. No apostrophes. Be concise.', 400); }
+  catch(e) { el.textContent = 'Error. Check connection.'; }
+});
+document.getElementById('aiq').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('askBtn').click(); });
+
+// Compare pickers
+document.getElementById('c1').addEventListener('click', function(){ openPick(1); });
+document.getElementById('c2').addEventListener('click', function(){ openPick(2); });
+document.getElementById('cancelPick').addEventListener('click', function(){ document.getElementById('pov').classList.remove('show'); });
+document.getElementById('pl').addEventListener('click', function(e){
+  var card = e.target.closest('[data-pidx]');
+  if (card) {
+    STATE.cmps[STATE.pf - 1] = STATE.all[parseInt(card.dataset.pidx)];
+    document.getElementById('pov').classList.remove('show');
+    renderCompare();
+  }
+});
+
+// Watchlist clicks & delete
+document.getElementById('wb').addEventListener('click', function(e){
+  var del = e.target.closest('.wdel');
+  if (del) {
+    e.stopPropagation();
+    var id = parseInt(del.dataset.did);
+    STATE.wl = STATE.wl.filter(function(x){ return x!==id; });
+    saveWL(); renderWL(); return;
+  }
+  var card = e.target.closest('[data-wid]');
+  if (card) {
+    var id = parseInt(card.dataset.wid);
+    var i = STATE.all.findIndex(function(c){ return c.id===id; });
+    if (i >= 0) { STATE.cars = STATE.all; openDetail(i); }
+  }
+});
+
+// AI chat
+document.getElementById('cSendBtn').addEventListener('click', function(){ sendChat(document.getElementById('ci').value); });
+document.getElementById('ci').addEventListener('keydown', function(e){ if(e.key==='Enter') sendChat(this.value); });
+document.getElementById('quickAsks').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-q]');
+  if (btn) sendChat(btn.dataset.q);
+});
+
+// ── START ─────────────────────────────────────────────────────────────────
 sh(0);
 </script>
 </body>
