@@ -4,69 +4,81 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { prompt, type, carName } = req.body;
+  const { prompt, type, carName, brand, model } = req.body;
 
-  // IMAGE FETCH from Wikimedia - unlimited, free, legal
+  // ── IMAGE FETCH ─────────────────────────────────────────────────────────
   if (type === 'images') {
-    try {
-      const query = encodeURIComponent(carName);
-      
-      // Search Wikimedia for car images
-      const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${query}&prop=images&imlimit=20&format=json&origin=*`;
-      const searchRes = await fetch(searchUrl);
-      const searchData = await searchRes.json();
-      
-      const pages = searchData.query?.pages || {};
-      const page = Object.values(pages)[0];
-      const imageFiles = (page?.images || [])
-        .map(img => img.title)
-        .filter(t => /\.(jpg|jpeg|png|webp)/i.test(t) && 
-                     !t.toLowerCase().includes('logo') &&
-                     !t.toLowerCase().includes('flag') &&
-                     !t.toLowerCase().includes('icon') &&
-                     !t.toLowerCase().includes('map'));
+    const angles = [
+      { label: 'exterior', query: `${carName} car exterior front` },
+      { label: 'side',     query: `${carName} car side view` },
+      { label: 'rear',     query: `${carName} car rear back` },
+      { label: 'interior', query: `${carName} car interior cabin` },
+      { label: 'dashboard',query: `${carName} car dashboard` },
+      { label: 'seats',    query: `${carName} car seats` },
+    ];
 
-      // Get actual image URLs
-      const imageUrls = [];
-      for (const file of imageFiles.slice(0, 12)) {
-        try {
-          const infoUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(file)}&prop=imageinfo&iiprop=url|size&format=json&origin=*`;
-          const infoRes = await fetch(infoUrl);
-          const infoData = await infoRes.json();
-          const infoPages = infoData.query?.pages || {};
-          const infoPage = Object.values(infoPages)[0];
-          const url = infoPage?.imageinfo?.[0]?.url;
-          if (url) imageUrls.push(url);
-        } catch(_) {}
-      }
+    const allImages = [];
 
-      // Also search Wikimedia Commons for more images
-      const commonsUrl = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${query}+car&srnamespace=6&srlimit=10&format=json&origin=*`;
-      const commonsRes = await fetch(commonsUrl);
-      const commonsData = await commonsRes.json();
-      const commonsFiles = commonsData.query?.search || [];
-      
-      for (const file of commonsFiles.slice(0, 8)) {
-        try {
+    // Try Wikimedia Commons for each angle
+    for (const angle of angles) {
+      try {
+        const q = encodeURIComponent(angle.query);
+        const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${q}&srnamespace=6&srlimit=3&format=json&origin=*`;
+        const r = await fetch(url);
+        const d = await r.json();
+        const files = d.query?.search || [];
+
+        for (const file of files) {
           const title = file.title;
           if (!/\.(jpg|jpeg|png|webp)/i.test(title)) continue;
-          const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url&format=json&origin=*`;
-          const infoRes = await fetch(infoUrl);
-          const infoData = await infoRes.json();
-          const infoPages = infoData.query?.pages || {};
-          const infoPage = Object.values(infoPages)[0];
-          const url = infoPage?.imageinfo?.[0]?.url;
-          if (url && !imageUrls.includes(url)) imageUrls.push(url);
-        } catch(_) {}
-      }
+          if (/logo|flag|icon|map|coat|seal|banner/i.test(title)) continue;
+          try {
+            const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|mime|size&format=json&origin=*`;
+            const ir = await fetch(infoUrl);
+            const id = await ir.json();
+            const page = Object.values(id.query?.pages || {})[0];
+            const imgUrl = page?.imageinfo?.[0]?.url;
+            const mime = page?.imageinfo?.[0]?.mime || '';
+            if (imgUrl && mime.startsWith('image/') && !allImages.includes(imgUrl)) {
+              allImages.push(imgUrl);
+            }
+          } catch(_) {}
+        }
+      } catch(_) {}
 
-      return res.status(200).json({ images: imageUrls.slice(0, 10) });
-    } catch(e) {
-      return res.status(200).json({ images: [] });
+      if (allImages.length >= 10) break;
     }
+
+    // If not enough images, try Wikipedia article images
+    if (allImages.length < 4) {
+      try {
+        const wq = encodeURIComponent(carName);
+        const wurl = `https://en.wikipedia.org/w/api.php?action=query&titles=${wq}&prop=images&imlimit=15&format=json&origin=*`;
+        const wr = await fetch(wurl);
+        const wd = await wr.json();
+        const pages = wd.query?.pages || {};
+        const page = Object.values(pages)[0];
+        const imgs = (page?.images || []).filter(i =>
+          /\.(jpg|jpeg|png)/i.test(i.title) &&
+          !/logo|flag|icon|map|coat|seal/i.test(i.title)
+        );
+        for (const img of imgs.slice(0, 6)) {
+          try {
+            const iu = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(img.title)}&prop=imageinfo&iiprop=url&format=json&origin=*`;
+            const ir = await fetch(iu);
+            const id = await ir.json();
+            const p = Object.values(id.query?.pages || {})[0];
+            const u = p?.imageinfo?.[0]?.url;
+            if (u && !allImages.includes(u)) allImages.push(u);
+          } catch(_) {}
+        }
+      } catch(_) {}
+    }
+
+    return res.status(200).json({ images: allImages.slice(0, 12) });
   }
 
-  // AI CAR DATA from Groq
+  // ── AI CAR DATA (Groq) ───────────────────────────────────────────────────
   try {
     const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
