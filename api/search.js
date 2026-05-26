@@ -4,81 +4,177 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { prompt, type, carName, brand, model } = req.body;
+  const { prompt, type, carName } = req.body;
 
-  // ── IMAGE FETCH ─────────────────────────────────────────────────────────
+  // ── IMAGE FETCH ──────────────────────────────────────────────────────────
   if (type === 'images') {
-    const angles = [
-      { label: 'exterior', query: `${carName} car exterior front` },
-      { label: 'side',     query: `${carName} car side view` },
-      { label: 'rear',     query: `${carName} car rear back` },
-      { label: 'interior', query: `${carName} car interior cabin` },
-      { label: 'dashboard',query: `${carName} car dashboard` },
-      { label: 'seats',    query: `${carName} car seats` },
-    ];
+    const name = (carName || '').toLowerCase();
 
-    const allImages = [];
+    // Curated official/press image database for popular cars
+    // Format: keyword -> [exterior, side, rear, interior, dashboard, seats]
+    const DB = {
+      'mahindra thar': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-exterior-right-front-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-exterior-rear-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/40087/thar-interior-seats.jpeg',
+      ],
+      'mahindra scorpio n': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-exterior-right-front-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-exterior-right-side-view.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-exterior-rear-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/scorpio-n-interior-seats.jpeg',
+      ],
+      'mahindra xuv700': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-exterior-right-front-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-exterior-right-side-view.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-exterior-rear-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/42355/xuv700-interior-seats.jpeg',
+      ],
+      'mahindra be 6e': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-exterior-right-front-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-exterior-right-side-view.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-exterior-rear-three-quarter.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/233403/be-6e-interior-seats.jpeg',
+      ],
+      'hyundai creta': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/206751/creta-interior-seats.jpeg',
+      ],
+      'tata nexon': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-exterior-right-side-view-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-exterior-rear-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/141057/nexon-interior-seats.jpeg',
+      ],
+      'tata punch': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-exterior-right-front-three-quarter-5.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-exterior-rear-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/115777/punch-interior-seats.jpeg',
+      ],
+      'maruti swift': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/159089/swift-interior-seats.jpeg',
+      ],
+      'maruti brezza': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-exterior-right-front-three-quarter-6.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-exterior-right-side-view-4.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-exterior-rear-three-quarter-4.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/53621/brezza-interior-seats.jpeg',
+      ],
+      'maruti grand vitara': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-exterior-right-front-three-quarter-5.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/135095/grand-vitara-interior-seats.jpeg',
+      ],
+      'maruti jimny': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/147087/jimny-interior-seats.jpeg',
+      ],
+      'kia seltos': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130583/seltos-interior-seats.jpeg',
+      ],
+      'toyota fortuner': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/44709/fortuner-interior-seats.jpeg',
+      ],
+      'hyundai ioniq 5': [
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-exterior-right-front-three-quarter-3.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-exterior-right-side-view-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-exterior-rear-three-quarter-2.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-interior-dashboard.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-interior-steering-wheel.jpeg',
+        'https://imgd.aeplcdn.com/664x374/n/cw/ec/130407/ioniq-5-interior-seats.jpeg',
+      ],
+    };
 
-    // Try Wikimedia Commons for each angle
-    for (const angle of angles) {
-      try {
-        const q = encodeURIComponent(angle.query);
-        const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${q}&srnamespace=6&srlimit=3&format=json&origin=*`;
-        const r = await fetch(url);
-        const d = await r.json();
-        const files = d.query?.search || [];
-
-        for (const file of files) {
-          const title = file.title;
-          if (!/\.(jpg|jpeg|png|webp)/i.test(title)) continue;
-          if (/logo|flag|icon|map|coat|seal|banner/i.test(title)) continue;
-          try {
-            const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|mime|size&format=json&origin=*`;
-            const ir = await fetch(infoUrl);
-            const id = await ir.json();
-            const page = Object.values(id.query?.pages || {})[0];
-            const imgUrl = page?.imageinfo?.[0]?.url;
-            const mime = page?.imageinfo?.[0]?.mime || '';
-            if (imgUrl && mime.startsWith('image/') && !allImages.includes(imgUrl)) {
-              allImages.push(imgUrl);
-            }
-          } catch(_) {}
-        }
-      } catch(_) {}
-
-      if (allImages.length >= 10) break;
+    // Check curated DB first
+    for (const [key, imgs] of Object.entries(DB)) {
+      if (name.includes(key) || key.split(' ').every(w => name.includes(w))) {
+        return res.status(200).json({ images: imgs, source: 'curated' });
+      }
     }
 
-    // If not enough images, try Wikipedia article images
-    if (allImages.length < 4) {
-      try {
-        const wq = encodeURIComponent(carName);
-        const wurl = `https://en.wikipedia.org/w/api.php?action=query&titles=${wq}&prop=images&imlimit=15&format=json&origin=*`;
-        const wr = await fetch(wurl);
-        const wd = await wr.json();
-        const pages = wd.query?.pages || {};
-        const page = Object.values(pages)[0];
-        const imgs = (page?.images || []).filter(i =>
-          /\.(jpg|jpeg|png)/i.test(i.title) &&
-          !/logo|flag|icon|map|coat|seal/i.test(i.title)
-        );
-        for (const img of imgs.slice(0, 6)) {
-          try {
-            const iu = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(img.title)}&prop=imageinfo&iiprop=url&format=json&origin=*`;
-            const ir = await fetch(iu);
-            const id = await ir.json();
-            const p = Object.values(id.query?.pages || {})[0];
-            const u = p?.imageinfo?.[0]?.url;
-            if (u && !allImages.includes(u)) allImages.push(u);
-          } catch(_) {}
-        }
-      } catch(_) {}
+    // Fallback: Wikimedia Commons with strict exterior filter
+    try {
+      const angles = [
+        carName + ' car exterior front',
+        carName + ' automobile side view',
+        carName + ' car rear view',
+        carName + ' car interior dashboard',
+        carName + ' car interior seats',
+        carName + ' automobile',
+      ];
+      const allImgs = [];
+      for (const q of angles) {
+        try {
+          const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&srnamespace=6&srlimit=2&format=json&origin=*`;
+          const r = await fetch(url);
+          const d = await r.json();
+          for (const f of (d.query?.search || [])) {
+            if (!/\.(jpg|jpeg|png)/i.test(f.title)) continue;
+            if (/logo|flag|icon|map|seal|banner|diagram|chart/i.test(f.title)) continue;
+            try {
+              const ir = await fetch(`https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(f.title)}&prop=imageinfo&iiprop=url|size&format=json&origin=*`);
+              const id = await ir.json();
+              const pg = Object.values(id.query?.pages || {})[0];
+              const imgUrl = pg?.imageinfo?.[0]?.url;
+              const w = pg?.imageinfo?.[0]?.width || 0;
+              // Only wide images (landscape = exterior shots)
+              if (imgUrl && w > 400 && !allImgs.includes(imgUrl)) {
+                allImgs.push(imgUrl);
+              }
+            } catch(_) {}
+          }
+        } catch(_) {}
+        if (allImgs.length >= 6) break;
+      }
+      return res.status(200).json({ images: allImgs.slice(0, 6), source: 'wikimedia' });
+    } catch(e) {
+      return res.status(200).json({ images: [], source: 'none' });
     }
-
-    return res.status(200).json({ images: allImages.slice(0, 12) });
   }
 
-  // ── AI CAR DATA (Groq) ───────────────────────────────────────────────────
+  // ── AI CAR DATA (Groq) ─────────────────────────────────────────────────
   try {
     const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -88,7 +184,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        max_tokens: 4000,
+        max_tokens: req.body.maxTokens || 3000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
