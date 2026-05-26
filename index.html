@@ -24,8 +24,8 @@ input[type=text]:focus{border-color:#5B9AF0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
 .card{background:#12121A;border:1px solid #2A2A3A;border-radius:12px;overflow:hidden;cursor:pointer}
 .card:active{opacity:.8}
-.cim{height:120px;background:#1A1A26;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;overflow:hidden}
-.cim img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.cim{height:120px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;overflow:hidden}
+.cim img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;background:#fff;padding:4px}
 .cbo{padding:10px}
 .cbr{color:#5A5A72;font-size:9px;text-transform:uppercase;letter-spacing:.8px}
 .cnm{font-size:13px;font-weight:700;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -129,6 +129,15 @@ input[type=text]:focus{border-color:#5B9AF0}
 .oh{background:#12121A;padding:13px 14px;border-bottom:1px solid #2A2A3A;display:flex;justify-content:space-between;align-items:center;font-weight:700}
 .ol{flex:1;overflow-y:auto;padding:12px}
 .oc{display:flex;align-items:center;gap:10px;background:#12121A;border:1px solid #2A2A3A;border-radius:10px;padding:11px;margin-bottom:7px;cursor:pointer}
+
+.ac-wrap{position:relative}
+.ac-drop{position:absolute;top:100%;left:0;right:0;background:#1A1A26;border:1px solid #2A2A3A;border-radius:10px;z-index:999;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.6);display:none;margin-top:4px}
+.ac-drop.show{display:block}
+.ac-item{padding:10px 14px;cursor:pointer;font-size:13px;color:#9090A8;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2A2A3A}
+.ac-item:last-child{border:none}
+.ac-item:hover,.ac-item.sel{background:#22222F;color:#F0F0F8}
+.ac-item b{color:#5B9AF0}
+.ac-em{font-size:18px}
 </style>
 </head>
 <body>
@@ -136,7 +145,10 @@ input[type=text]:focus{border-color:#5B9AF0}
 <div class="top">
   <div class="logo">🌍 CarGlobe</div>
   <div class="srow">
-    <input type="text" id="si" placeholder="Search any car — Mahindra, BMW, Tesla...">
+    <div class="ac-wrap" style="flex:1;position:relative">
+      <input type="text" id="si" placeholder="Search any car — Mahindra, BMW, Tesla..." style="width:100%">
+      <div class="ac-drop" id="acDrop"></div>
+    </div>
     <button class="sbtn" id="searchBtn">Search</button>
   </div>
   <div class="hint" id="hint">Search any car brand or model in the world</div>
@@ -711,6 +723,153 @@ document.getElementById('ci').addEventListener('keydown', function(e){ if(e.key=
 document.getElementById('quickAsks').addEventListener('click', function(e){
   var btn = e.target.closest('[data-q]');
   if (btn) sendChat(btn.dataset.q);
+});
+
+// ── AUTOCOMPLETE ─────────────────────────────────────────────────────────
+var AC_LIST = [
+  // Mahindra
+  ['🏕️','Mahindra Thar'],['🦂','Mahindra Scorpio N'],['🚀','Mahindra XUV700'],
+  ['⚡','Mahindra BE 6e'],['💪','Mahindra Bolero'],['🌱','Mahindra XUV 3XO'],
+  ['🚙','Mahindra XUV400'],['🔵','Mahindra Scorpio Classic'],['🟢','Mahindra Bolero Neo'],
+  // Tata
+  ['🌱','Tata Nexon EV'],['💥','Tata Punch'],['🔥','Tata Harrier'],
+  ['🦁','Tata Safari'],['🌿','Tata Curvv EV'],['⚡','Tata Tiago EV'],
+  ['🚗','Tata Altroz'],['🌊','Tata Nexon'],['🏆','Tata Sierra EV'],
+  // Maruti Suzuki
+  ['🚗','Maruti Swift'],['🌄','Maruti Grand Vitara'],['🏔️','Maruti Jimny'],
+  ['🔶','Maruti Brezza'],['🚀','Maruti Fronx'],['💎','Maruti Baleno'],
+  ['🚌','Maruti Ertiga'],['🌟','Maruti Dzire'],['🎯','Maruti Celerio'],
+  ['🔵','Maruti S-Presso'],['🟡','Maruti WagonR'],['🟠','Maruti Ignis'],
+  // Hyundai
+  ['🚙','Hyundai Creta'],['🌿','Hyundai Ioniq 5'],['🎯','Hyundai Venue'],
+  ['👑','Hyundai Tucson'],['⚡','Hyundai Kona EV'],['🔋','Hyundai Ioniq 6'],
+  ['🌊','Hyundai Alcazar'],['🏆','Hyundai Verna'],['💫','Hyundai i20'],
+  ['🌸','Hyundai Aura'],['🔥','Hyundai Exter'],
+  // Kia
+  ['🎯','Kia Seltos'],['⭐','Kia Sonet'],['🌟','Kia EV6'],
+  ['👑','Kia Carnival'],['🔋','Kia EV9'],['💎','Kia Carens'],
+  // Toyota
+  ['🏔️','Toyota Fortuner'],['🍀','Toyota Innova Crysta'],['🌿','Toyota Camry'],
+  ['🚗','Toyota Glanza'],['🏆','Toyota Hyryder'],['🔵','Toyota Land Cruiser'],
+  ['⚡','Toyota bZ4X'],['🌊','Toyota Hilux'],
+  // Honda
+  ['🚗','Honda City'],['🏆','Honda Elevate'],['🌿','Honda Amaze'],
+  ['💎','Honda WR-V'],['🔵','Honda Jazz'],['⚡','Honda Activa'],
+  // Tesla
+  ['🔋','Tesla Model 3'],['🌿','Tesla Model Y'],['🚀','Tesla Model S'],
+  ['👑','Tesla Model X'],['⚡','Tesla Cybertruck'],['💎','Tesla Model 2'],
+  // BMW
+  ['👑','BMW X5'],['🔵','BMW 3 Series'],['💎','BMW 5 Series'],
+  ['🏆','BMW X3'],['⚡','BMW iX'],['🌿','BMW i4'],
+  ['🔥','BMW M3'],['🌊','BMW 7 Series'],['🚀','BMW X7'],
+  // Mercedes
+  ['⭐','Mercedes GLC'],['👑','Mercedes E-Class'],['💫','Mercedes C-Class'],
+  ['🏆','Mercedes GLE'],['⚡','Mercedes EQS'],['🌿','Mercedes A-Class'],
+  ['🔵','Mercedes S-Class'],['🔥','Mercedes AMG GT'],
+  // Audi
+  ['🔷','Audi Q5'],['💎','Audi A4'],['🏆','Audi Q7'],
+  ['⚡','Audi e-tron'],['🌿','Audi A6'],['🔵','Audi Q3'],
+  // Volkswagen
+  ['🔵','Volkswagen Taigun'],['💎','Volkswagen Virtus'],['🏆','Volkswagen Tiguan'],
+  ['🌿','Volkswagen Polo'],['⚡','Volkswagen ID.4'],
+  // Skoda
+  ['🔵','Skoda Kushaq'],['💎','Skoda Slavia'],['🏆','Skoda Kodiaq'],
+  ['🌿','Skoda Octavia'],['⚡','Skoda Enyaq'],
+  // Jeep
+  ['🟠','Jeep Wrangler'],['🏔️','Jeep Compass'],['🔥','Jeep Meridian'],
+  ['💪','Jeep Grand Cherokee'],
+  // Ford
+  ['🛻','Ford F-150'],['🔵','Ford Mustang'],['🌿','Ford EcoSport'],
+  ['⚡','Ford Mustang Mach-E'],
+  // BYD
+  ['⚡','BYD Atto 3'],['🔋','BYD Seal'],['🌿','BYD Han'],
+  ['💎','BYD Dolphin'],['🚀','BYD Tang'],['🌊','BYD Sealion 6'],
+  // Porsche
+  ['🏎️','Porsche 911'],['🔥','Porsche Cayenne'],['💎','Porsche Macan'],
+  ['⚡','Porsche Taycan'],['🌿','Porsche Panamera'],
+  // Ferrari
+  ['🔴','Ferrari Roma'],['🏎️','Ferrari 296 GTB'],['💎','Ferrari Purosangue'],
+  ['🔥','Ferrari SF90'],
+  // Lamborghini
+  ['🟡','Lamborghini Urus'],['🏎️','Lamborghini Huracan'],['🔥','Lamborghini Revuelto'],
+  // Land Rover
+  ['🔶','Land Rover Defender'],['👑','Range Rover Sport'],['💎','Range Rover Velar'],
+  ['🏆','Land Rover Discovery'],
+  // Volvo
+  ['🇸🇪','Volvo XC60'],['💎','Volvo XC90'],['⚡','Volvo EX40'],
+  // Nissan
+  ['🔵','Nissan Magnite'],['💎','Nissan X-Trail'],['⚡','Nissan Leaf'],
+  // MG
+  ['🌿','MG ZS EV'],['🔵','MG Hector'],['💎','MG Gloster'],
+  ['⚡','MG Comet EV'],['🏆','MG Astor'],
+  // Renault
+  ['🔵','Renault Kiger'],['💎','Renault Triber'],['🌿','Renault Duster'],
+  // Citroen
+  ['🔵','Citroen C3'],['💎','Citroen C3 Aircross'],['🌿','Citroen eC3'],
+  // Force
+  ['💪','Force Gurkha'],['🏔️','Force Trax'],
+];
+
+var acIdx = -1;
+
+function showAC(val) {
+  var drop = document.getElementById('acDrop');
+  if (!val || val.length < 2) { drop.classList.remove('show'); return; }
+  var q = val.toLowerCase();
+  var matches = AC_LIST.filter(function(x){
+    return x[1].toLowerCase().includes(q);
+  }).slice(0, 8);
+  if (!matches.length) { drop.classList.remove('show'); return; }
+  drop.innerHTML = matches.map(function(m, i){
+    var highlighted = m[1].replace(new RegExp('('+val.replace(/[.*+?^${}()|[\]\]/g,'\$&')+')', 'gi'), '<b>$1</b>');
+    return '<div class="ac-item" data-val="'+m[1]+'" data-aidx="'+i+'"><span class="ac-em">'+m[0]+'</span><span>'+highlighted+'</span></div>';
+  }).join('');
+  drop.classList.add('show');
+  acIdx = -1;
+}
+
+function hideAC() { document.getElementById('acDrop').classList.remove('show'); acIdx = -1; }
+
+function selectAC(val) {
+  document.getElementById('si').value = val;
+  hideAC();
+  doSearch();
+}
+
+// Input events for autocomplete
+document.getElementById('si').addEventListener('input', function(){ showAC(this.value); });
+document.getElementById('si').addEventListener('keydown', function(e){
+  var items = document.querySelectorAll('.ac-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    acIdx = Math.min(acIdx+1, items.length-1);
+    items.forEach(function(el,i){ el.classList.toggle('sel', i===acIdx); });
+    if(items[acIdx]) this.value = items[acIdx].dataset.val;
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    acIdx = Math.max(acIdx-1, -1);
+    items.forEach(function(el,i){ el.classList.toggle('sel', i===acIdx); });
+    if(acIdx>=0 && items[acIdx]) this.value = items[acIdx].dataset.val;
+  } else if (e.key === 'Escape') {
+    hideAC();
+  } else if (e.key === 'Enter') {
+    if (acIdx >= 0 && items[acIdx]) {
+      selectAC(items[acIdx].dataset.val);
+    } else {
+      hideAC();
+      doSearch();
+    }
+  }
+});
+
+document.getElementById('acDrop').addEventListener('click', function(e){
+  var item = e.target.closest('.ac-item');
+  if (item) selectAC(item.dataset.val);
+});
+
+// Hide AC when clicking outside
+document.addEventListener('click', function(e){
+  if (!e.target.closest('.ac-wrap')) hideAC();
 });
 
 // ── START ─────────────────────────────────────────────────────────────────
